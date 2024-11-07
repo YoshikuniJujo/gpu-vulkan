@@ -6,7 +6,9 @@ cabal-version: 1.12
 
 name:           gpu-vulkan
 version:        0.1.0.137
+synopsis:       Vulkan library
 description:    Please see the README on GitHub at <https://github.com/YoshikuniJujo/gpu-vulkan#readme>
+category:       GPU
 homepage:       https://github.com/YoshikuniJujo/gpu-vulkan#readme
 bug-reports:    https://github.com/YoshikuniJujo/gpu-vulkan/issues
 author:         Yoshikuni Jujo
