@@ -44,6 +44,8 @@ module Gpu.Vulkan.Object (
 	pattern LengthAtom,
 	pattern LengthList,
 	pattern LengthImage,
+	lengthImageRow, lengthImageWidth, lengthImageHeight, lengthImageDepth,
+
 	pattern LengthDynAtom,
 	pattern LengthDynList,
 	pattern LengthDynImage,
@@ -164,8 +166,11 @@ pattern LengthList' n <- LengthStatic (K.LengthList (Device.M.Size n)) where
 pattern LengthImage ::
 	Device.M.Size -> Device.M.Size -> Device.M.Size -> Device.M.Size ->
 	Length ('Static_ (K.ImageMaybeName algn v mnm))
-pattern LengthImage kr kw kh kd <- (LengthStatic (K.LengthImage kr kw kh kd))
-	where LengthImage kr kw kh kd = LengthStatic (K.LengthImage kr kw kh kd)
+pattern LengthImage {
+	lengthImageRow, lengthImageWidth,
+	lengthImageHeight, lengthImageDepth } = LengthStatic (K.LengthImage
+		lengthImageRow lengthImageWidth
+		lengthImageHeight lengthImageDepth)
 
 pattern LengthDynAtom :: Length ('Dynamic n (K.Atom algn v nm))
 pattern LengthDynAtom <- LengthDynamic K.LengthAtom where
