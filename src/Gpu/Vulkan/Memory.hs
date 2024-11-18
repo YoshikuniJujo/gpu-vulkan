@@ -22,11 +22,13 @@ module Gpu.Vulkan.Memory (
 
 	-- ** MEMORY
 
-	M, getBinded, ImageBuffer(..), ImageBufferBinded(..), ImageBufferArg(..),
+	M, getBinded,
+	ImageBuffer(..), ImageBufferBinded(..), ImageBufferArg(..),
 
 	-- ** ALLOCATE INFO
 
 	AllocateInfo(..), M.MType(..), M.TypeBits, M.TypeIndex, M.elemTypeIndex,
+	M.Heap(..),
 
 	-- ** BINDABLE AND REBINDABLE
 
