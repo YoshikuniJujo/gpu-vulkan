@@ -17,7 +17,7 @@ module Gpu.Vulkan.CommandBuffer (
 
 	-- ** Type Level List
 
-	allocate, AllocateInfo(..),
+	allocateCs, AllocateInfo(..),
 
 	-- ** Value Level List
 
@@ -47,11 +47,11 @@ import qualified Gpu.Vulkan.Device.Type as Device
 import qualified Gpu.Vulkan.CommandPool.Type as CommandPool
 import qualified Gpu.Vulkan.CommandBuffer.Middle as M
 
-allocate :: (
+allocateCs :: (
 	WithPoked (TMaybe.M mn), TLength.Length c, HeteroParList.FromList c ) =>
 	Device.D sd -> AllocateInfo mn scp c ->
 	(forall scb . HeteroParList.LL (C scb) c -> IO a) -> IO a
-allocate (Device.D dvc) ai f = bracket
+allocateCs (Device.D dvc) ai f = bracket
 	(M.allocateCs dvc $ allocateInfoToMiddle ai)
 	(M.freeCs dvc
 		. (\(CommandPool.C cp) -> cp) $ allocateInfoCommandPool ai)
