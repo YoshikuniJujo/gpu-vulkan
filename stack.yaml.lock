@@ -5,12 +5,12 @@
 
 packages:
 - completed:
-    hackage: gpu-vulkan-middle-0.1.0.55@sha256:6216c65901929eec9977e37c9020946d087ccc3975a89c2a23a4dcbba2f5608b,8441
+    hackage: gpu-vulkan-middle-0.1.0.56@sha256:927090e3106b8ba12f752221d872742af6205588869513dd6a328c52492a89da,8441
     pantry-tree:
-      sha256: dc5e267ddabc514c72d0dc68643a56cef05f6938874aa6850d419afb0f490749
+      sha256: e5f6e6b3da616dc575e9d40872090f8f5390f16494d547f702abbba1ab27ea84
       size: 12409
   original:
-    hackage: gpu-vulkan-middle-0.1.0.55
+    hackage: gpu-vulkan-middle-0.1.0.56
 - completed:
     hackage: gpu-vulkan-core-0.1.0.8@sha256:a4dcd94ed86133a1d7b991fb2f3547f3838e05a0dfdb6a308a61e44a0828baa5,3369
     pantry-tree:
