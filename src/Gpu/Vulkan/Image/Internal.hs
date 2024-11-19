@@ -184,7 +184,7 @@ data CreateInfo mn (fmt :: T.Format) = CreateInfo {
 	createInfoTiling :: Tiling,
 	createInfoUsage :: UsageFlags,
 	createInfoSharingMode :: SharingMode,
-	createInfoQueueFamilyIndices :: [Word32],
+	createInfoQueueFamilyIndices :: [QueueFamily.Index],
 	createInfoInitialLayout :: Layout }
 
 deriving instance Show (TMaybe.M mn) => Show (CreateInfo mn fmt)
