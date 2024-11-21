@@ -18,7 +18,7 @@
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
 
-resolver: nightly-2024-11-12
+resolver: nightly-2024-11-21
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -46,8 +46,6 @@ extra-deps:
 - gpu-vulkan-core-0.1.0.8
 - language-spir-v-0.1.0.1
 - union-color-0.1.2.0
-- mtl-misc-yj-0.1.0.1
-- text-misc-yj-0.1.0.0
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

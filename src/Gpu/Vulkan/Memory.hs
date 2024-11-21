@@ -40,7 +40,7 @@ module Gpu.Vulkan.Memory (
 
 	-- * READ AND WRITE
 
-	read, write, OffsetSize,
+	read, write, OffsetSize, M.MapFlags,
 
 	-- * BARRIER
 
