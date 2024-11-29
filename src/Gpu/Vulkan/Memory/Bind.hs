@@ -67,9 +67,9 @@ instance (VObj.SizeAlignment obj, BindAll ibargs mibargs) =>
 		let	ost'' = adjust (VObj.alignment @obj) ost'
 		when debug . putStrLn $ "Gpu.Vulkan.Memory.Bind.BindAll (BufferArg): " ++ show (ost', sz)
 		when debug . putStrLn $ "Gpu.Vulkan.Memory.Bind.BindAll (BufferArg): ost'' = " ++ show ost''
-		Buffer.M.bindMemory mdv b mm ost'
+		Buffer.M.bindMemory mdv b mm ost''
 		(U2 (BufferBinded $ Buffer.Binded lns b) :**)
-			<$> bindAll dv ibs m (ost' + sz)
+			<$> bindAll dv ibs m (ost'' + sz)
 
 instance BindAll ibargs mibargs =>
 	BindAll ('(sb, 'RawArg) ': ibargs) mibargs where
