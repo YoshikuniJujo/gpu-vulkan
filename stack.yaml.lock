@@ -27,7 +27,7 @@ packages:
     hackage: language-spir-v-0.1.0.1
 snapshots:
 - completed:
-    sha256: ddd882a4577193f6002c111fb7ad443341d21418267a14116c2139be70a73cb2
-    size: 679066
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2024/11/21.yaml
-  original: nightly-2024-11-21
+    sha256: 2986dc4a4c2c76ad81b7d98e500e261369ee4e3c99f619559238326eacba66aa
+    size: 679067
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2024/11/28.yaml
+  original: nightly-2024-11-28
