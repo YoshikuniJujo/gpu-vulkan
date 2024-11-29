@@ -61,6 +61,12 @@ instance BindAll ibargs mibargs =>
 		(U2 (BufferBinded $ Buffer.Binded lns b) :**)
 			<$> bindAll dv ibs m (ost' + sz)
 
+instance BindAll ibargs mibargs =>
+	BindAll ('(sb, 'RawArg) ': ibargs) mibargs where
+	bindAll dv (U2 bb@(Raw a s) :** ibs) m ost  = do
+		(ost', sz) <- adjustOffsetSize dv bb ost
+		(U2 (RawBinded a s) :**) <$> bindAll dv ibs m (ost' + sz)
+
 class (RebindAll ibargs ibargs, Alignments ibargs) => Rebindable ibargs
 instance (RebindAll ibargs ibargs, Alignments ibargs) => Rebindable ibargs
 
@@ -87,4 +93,10 @@ instance RebindAll ibargs mibargs =>
 		(_, mm) <- readM m
 		(ost', sz) <- adjustOffsetSizeBinded dv bb ost
 		Buffer.M.bindMemory mdv b mm ost'
+		rebindAll dv ibs m $ ost' + sz
+
+instance RebindAll ibargs mibargs =>
+	RebindAll ('(sb, 'RawArg) ': ibargs) mibargs where
+	rebindAll dv (U2 bb :** ibs) m ost = do
+		(ost', sz) <- adjustOffsetSizeBinded dv bb ost
 		rebindAll dv ibs m $ ost' + sz
