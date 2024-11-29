@@ -242,16 +242,20 @@ reallocateInfoToMiddle dv ibs AllocateInfo {
 		M.allocateInfoMemoryTypeIndex = mti }
 
 memoryRequirementsListToSize ::
-	Device.M.Size -> [Maybe Device.M.Size] -> [M.Requirements] -> Device.M.Size
+	Device.M.Size -> [Maybe Device.M.Size] -> [Either AlgnSize M.Requirements] -> Device.M.Size
 memoryRequirementsListToSize sz0 _ [] = sz0
 memoryRequirementsListToSize sz0 [] _ = sz0
-memoryRequirementsListToSize sz0 (malgn : malgns) (reqs : reqss) =
+memoryRequirementsListToSize sz0 (malgn : malgns) (ereqs : reqss) =
 	memoryRequirementsListToSize
 		(((sz0 - 1) `div` algn + 1) * algn + sz) malgns reqss
 	where
-	sz = M.requirementsSize reqs
-	algn = (fromMaybe 1 malgn) `lcm`
-		M.requirementsAlignment reqs
+	sz = case ereqs of
+		Left (_, s) -> s
+		Right reqs -> M.requirementsSize reqs
+	algn = case ereqs of
+		Left (a, _) -> a
+		Right reqs ->
+			(fromMaybe 1 malgn) `lcm` M.requirementsAlignment reqs
 
 -- READ AND WRITE
 

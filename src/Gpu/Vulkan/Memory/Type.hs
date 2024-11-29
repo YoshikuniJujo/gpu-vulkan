@@ -55,6 +55,7 @@ getBinded m = HeteroParList.map toBinded . fst <$> readM m
 	toBinded :: U2 ImageBuffer ibarg -> U2 (ImageBufferBinded sm) ibarg
 	toBinded (U2 (Image (I.I i))) = U2 . ImageBinded $ I.Binded i
 	toBinded (U2 (Buffer (B.B x b))) = U2 . BufferBinded $ B.Binded x b
+	toBinded (U2 (Raw algn sz)) = U2 $ RawBinded algn sz
 
 readM :: M s ibargs -> IO (HeteroParList.PL (U2 ImageBuffer) ibargs, M.M)
 readM (M ib m) = (, m) <$> readIORef ib
@@ -67,6 +68,7 @@ writeMBinded (M rib _r) ibs =
 	fromBinded :: U2 (ImageBufferBinded sm) ibarg -> U2 ImageBuffer ibarg
 	fromBinded (U2 (ImageBinded (I.Binded i))) = U2 . Image $ I.I i
 	fromBinded (U2 (BufferBinded (B.Binded x b))) = U2 . Buffer $ B.B x b
+	fromBinded (U2 (RawBinded algn sz)) = U2 $ Raw algn sz
 
 -- OBJECT LENGTH
 
