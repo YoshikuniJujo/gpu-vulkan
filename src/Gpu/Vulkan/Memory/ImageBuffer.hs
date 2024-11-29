@@ -147,6 +147,9 @@ instance (VObj.WholeAlign objs, Alignments ibs) =>
 	Alignments ('(_s, 'BufferArg _nm objs) ': ibs) where
 	alignments = Just (VObj.wholeAlign @objs) : alignments @ibs
 
+instance Alignments ibs => Alignments ('(_s, 'RawArg) ': ibs) where
+	alignments = Nothing : alignments @ibs
+
 -- OBJECT LENGTH
 
 class ObjectLength (nm :: Symbol) (obj :: VObj.O) ibargs where
