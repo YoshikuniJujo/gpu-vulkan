@@ -34,7 +34,7 @@ module Gpu.Vulkan.Memory.ImageBuffer (
 
 	-- * OTHERS
 
-	AlgnSize
+	AlgnSize, adjust
 
 	) where
 

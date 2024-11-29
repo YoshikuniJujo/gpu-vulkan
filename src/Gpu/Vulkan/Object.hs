@@ -82,6 +82,10 @@ module Gpu.Vulkan.Object (
 
 	SizeAlignmentList(..), SizeAlignment(..),
 
+	-- ** Others
+
+	alignment
+
 	) where
 
 import Prelude hiding (length)

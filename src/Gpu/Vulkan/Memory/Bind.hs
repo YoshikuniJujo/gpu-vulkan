@@ -34,6 +34,8 @@ import Gpu.Vulkan.Image.Middle qualified as Image.M
 
 import Gpu.Vulkan.Memory.Type
 
+import Gpu.Vulkan.Object qualified as VObj
+
 import Debug
 
 class (BindAll ibargs ibargs, Alignments ibargs) => Bindable ibargs
@@ -51,18 +53,20 @@ instance BindAll ibargs mibargs =>
 	bindAll dv@(Device.D mdv) (U2 ii@(Image (Image.I i)) :** ibs) m ost = do
 		(_, mm) <- readM m
 		(ost', sz) <- adjustOffsetSize dv ii ost
-		when debug . putStrLn $ "Gpu.Vulkan.Memory.Bind.BindAll (ImageArg): " ++ show (ost', sz)
+		when debug . putStrLn $ "Gpu.Vulkan.Memory.Bind.BindAll (ImageArg): (ost', sz) = " ++ show (ost', sz)
 		Image.M.bindMemory mdv i mm ost'
 		(U2 (ImageBinded $ Image.Binded i) :**)
 			<$> bindAll dv ibs m (ost' + sz)
 
-instance BindAll ibargs mibargs =>
-	BindAll ('(sb, ('BufferArg nm objs)) ': ibargs) mibargs where
+instance (VObj.SizeAlignment obj, BindAll ibargs mibargs) =>
+	BindAll ('(sb, ('BufferArg nm (obj ': objs))) ': ibargs) mibargs where
 	bindAll dv@(Device.D mdv)
 		(U2 bb@(Buffer (Buffer.B lns b)) :** ibs) m ost  = do
 		(_, mm) <- readM m
 		(ost', sz) <- adjustOffsetSize dv bb ost
+		let	ost'' = adjust (VObj.alignment @obj) ost'
 		when debug . putStrLn $ "Gpu.Vulkan.Memory.Bind.BindAll (BufferArg): " ++ show (ost', sz)
+		when debug . putStrLn $ "Gpu.Vulkan.Memory.Bind.BindAll (BufferArg): ost'' = " ++ show ost''
 		Buffer.M.bindMemory mdv b mm ost'
 		(U2 (BufferBinded $ Buffer.Binded lns b) :**)
 			<$> bindAll dv ibs m (ost' + sz)
