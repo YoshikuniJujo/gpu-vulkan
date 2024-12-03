@@ -7,7 +7,7 @@
 {-# LANGUAGE MultiParamTypeClasses, AllowAmbiguousTypes #-}
 {-# LANGUAGE FlexibleContexts, FlexibleInstances, UndecidableInstances #-}
 {-# LANGUAGE PatternSynonyms, ViewPatterns #-}
-{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE StandaloneDeriving, GeneralizedNewtypeDeriving #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
 module Gpu.Vulkan.Memory.ImageBuffer (
@@ -34,7 +34,11 @@ module Gpu.Vulkan.Memory.ImageBuffer (
 
 	-- * OTHERS
 
-	AlgnSize, adjust
+	AlgnSize, adjust,
+
+	-- * RAW OFFSET
+
+	RawOffset(..), RawOffsetToOffset(..)
 
 	) where
 
@@ -51,12 +55,15 @@ import qualified Gpu.Vulkan.Buffer.Type as Buffer
 
 import qualified Gpu.Vulkan.TypeEnum as T
 
+import qualified Gpu.Vulkan.Device as Device
 import qualified Gpu.Vulkan.Device.Type as Device
 import qualified Gpu.Vulkan.Device.Middle as Device.M
 
 import qualified Gpu.Vulkan.Image.Middle as Image.M
 import qualified Gpu.Vulkan.Buffer.Middle as Buffer.M
 import qualified Gpu.Vulkan.Memory.Middle as Memory.M
+
+import qualified Data.HeteroParList as HPList
 
 -- IMAGE BUFFER
 
@@ -164,3 +171,27 @@ instance VObj.LengthOf obj objs =>
 instance {-# OVERLAPPABLE #-} ObjectLength nm obj ibargs =>
 	ObjectLength nm obj (ibarg ': ibargs) where
 	objectLength' (_ :** lns) = objectLength' @nm @obj lns
+
+-- RAW OFFSET
+
+class RawOffsetToOffset ibargs (n :: Nat) where
+	rawOffsetToOffset :: Device.Size -> Device.D sd ->
+		HPList.PL (U2 ImageBuffer) ibargs -> RawOffset n ->
+		IO Device.Size
+
+instance RawOffsetToOffset ('(sr, RawArg) ': ibargs) 0 where
+	rawOffsetToOffset ost0 _ _ (RawOffset o) = pure $ ost0 + o
+
+instance {-# OVERLAPPABLE #-} RawOffsetToOffset ibargs (n - 1) =>
+	RawOffsetToOffset ('(sr, RawArg) ': ibargs) n where
+	rawOffsetToOffset ost0 dv (U2 ib :** ibs) (RawOffset o) = do
+		(ost', sz) <- adjustOffsetSize dv ib ost0
+		rawOffsetToOffset (ost' + sz) dv ibs (RawOffset @(n - 1) o)
+
+instance {-# OVERLAPPABLE #-} RawOffsetToOffset ibargs n =>
+	RawOffsetToOffset (ibarg ': ibargs) n where
+	rawOffsetToOffset ost0 dv (U2 ib :** ibs) ro = do
+		(ost', sz) <- adjustOffsetSize dv ib ost0
+		rawOffsetToOffset (ost' + sz) dv ibs ro
+
+newtype RawOffset (n :: Nat) = RawOffset Device.Size deriving (Show, Num)

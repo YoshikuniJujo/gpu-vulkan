@@ -46,9 +46,13 @@ module Gpu.Vulkan.Memory (
 
 	M.Barrier(..),
 
+	-- * OTHERS
+
+	RawOffset(..),
+
 	-- * ENUM
 
-	module Gpu.Vulkan.Memory.Enum
+	module Gpu.Vulkan.Memory.Enum,
 
 	) where
 

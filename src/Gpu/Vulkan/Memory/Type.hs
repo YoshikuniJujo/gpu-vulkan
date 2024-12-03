@@ -7,6 +7,7 @@
 {-# LANGUAGE MultiParamTypeClasses, AllowAmbiguousTypes #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
 module Gpu.Vulkan.Memory.Type (
@@ -23,7 +24,11 @@ module Gpu.Vulkan.Memory.Type (
 
 	-- * OBJECT LENGTH
 
-	objectLength
+	objectLength,
+
+	-- * RAW OFFSET
+
+	RawOffset, rawOffset, RawOffsetToOffset
 
 	) where
 
@@ -38,6 +43,8 @@ import Gpu.Vulkan.Image.Type qualified as I
 
 import Gpu.Vulkan.Memory.ImageBuffer
 import Gpu.Vulkan.Memory.Middle qualified as M
+
+import Gpu.Vulkan.Device.Internal qualified as Device
 
 -- MEMORY
 
@@ -75,3 +82,11 @@ writeMBinded (M rib _r) ibs =
 objectLength :: forall nm obj ibargs sm . ObjectLength nm obj ibargs =>
 	M sm ibargs -> IO (VObj.Length obj)
 objectLength m = (<$> readM m) \(ibs, _m) -> objectLength' @nm @obj @ibargs ibs
+
+-- RAW OFFSET
+
+rawOffset :: RawOffsetToOffset ibargs n =>
+	Device.D sd -> M sm ibargs -> RawOffset n -> IO Device.Size
+rawOffset dv (M ribs _) ro = do
+	ibs <- readIORef ribs
+	rawOffsetToOffset 0 dv ibs ro
