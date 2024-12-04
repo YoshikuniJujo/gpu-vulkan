@@ -1,9 +1,15 @@
 {-# LANGUAGE ImportQualifiedPost #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE PatternSynonyms #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
 module Gpu.Vulkan.Sparse.Image.Internal where
 
 import Data.TypeLevel.Tuple.Uncurry
+import Data.HeteroParList (pattern (:**))
 import Data.HeteroParList qualified as HPList
 
 import Gpu.Vulkan.Internal
@@ -29,6 +35,21 @@ opaqueMemoryBindInfoToMiddle dv OpaqueMemoryBindInfo {
 	pure M.OpaqueMemoryBindInfo {
 		M.opaqueMemoryBindInfoImage = i,
 		M.opaqueMemoryBindInfoBinds = mbs }
+
+data MemoryBindInfo si inm fmt sais = MemoryBindInfo {
+	memoryBindInfoImage :: Image.I si inm fmt,
+	memoryBindInfoBinds :: HPList.PL (U3 MemoryBind) sais }
+
+memoryBindInfoToMiddle :: MemoryBindsToMiddle sais =>
+	Device.D sd -> MemoryBindInfo si inm fmt sais -> IO M.MemoryBindInfo
+memoryBindInfoToMiddle dv MemoryBindInfo {
+	memoryBindInfoImage = Image.I mi,
+	memoryBindInfoBinds = bs
+	} = do
+	mbs <- memoryBindsToMiddle dv bs
+	pure M.MemoryBindInfo {
+		M.memoryBindInfoImage = mi,
+		M.memoryBindInfoBinds = mbs }
 
 data MemoryBind sm ibargs i = MemoryBind {
 	memoryBindSubresource :: Image.Subresource,
@@ -56,3 +77,16 @@ memoryBindToMiddle dv MemoryBind {
 		M.memoryBindMemory = mm,
 		M.memoryBindMemoryOffset = mmo,
 		M.memoryBindFlags = fs }
+
+class MemoryBindsToMiddle sais where
+	memoryBindsToMiddle ::
+		Device.D sd -> HPList.PL (U3 MemoryBind) sais -> IO [M.MemoryBind]
+
+instance MemoryBindsToMiddle '[] where
+	memoryBindsToMiddle _ HPList.Nil = pure []
+
+instance (Memory.RawOffsetToOffset ibargs i, MemoryBindsToMiddle sais) =>
+	MemoryBindsToMiddle ('(sm, ibargs, i) ': sais) where
+	memoryBindsToMiddle dv (U3 mb :** mbs) = (:)
+		<$> memoryBindToMiddle dv mb
+		<*> memoryBindsToMiddle dv mbs
