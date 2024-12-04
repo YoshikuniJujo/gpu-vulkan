@@ -127,6 +127,7 @@ library:
   - Gpu.Vulkan.TypeEnum
   - Gpu.Vulkan.VertexInput
   - Gpu.Vulkan.Sparse
+  - Gpu.Vulkan.Sparse.Buffer
 
 data-files:
   - th/vkPhysicalDeviceLimits.txt

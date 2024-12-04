@@ -99,6 +99,7 @@ library
       Gpu.Vulkan.TypeEnum
       Gpu.Vulkan.VertexInput
       Gpu.Vulkan.Sparse
+      Gpu.Vulkan.Sparse.Buffer
   other-modules:
       Gpu.Vulkan.AllocationCallbacks.Type
       Gpu.Vulkan.Attachment.Enum
@@ -173,6 +174,7 @@ library
       Gpu.Vulkan.Sampler.Type
       Gpu.Vulkan.Semaphore.Type
       Gpu.Vulkan.ShaderModule.Internal
+      Gpu.Vulkan.Sparse.Buffer.Internal
       Gpu.Vulkan.Sparse.Enum
       Gpu.Vulkan.Sparse.Internal
       Gpu.Vulkan.Subpass.Enum
