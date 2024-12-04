@@ -1,7 +1,16 @@
 {-# LANGUAGE ImportQualifiedPost #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE PatternSynonyms #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
 module Gpu.Vulkan.Sparse.Internal where
+
+import Data.TypeLevel.Tuple.Uncurry
+import Data.HeteroParList (pattern (:**))
+import Data.HeteroParList qualified as HPList
 
 import Gpu.Vulkan.Device qualified as Device
 import Gpu.Vulkan.Memory.Type qualified as Memory
@@ -31,3 +40,16 @@ memoryBindToMiddle dv MemoryBind {
 		M.memoryBindMemory = mm,
 		M.memoryBindMemoryOffset = mo,
 		M.memoryBindFlags = fs }
+
+class MemoryBindsToMiddle sais where
+	memoryBindsToMiddle ::
+		Device.D sd -> HPList.PL (U3 MemoryBind) sais -> IO [M.MemoryBind]
+
+instance MemoryBindsToMiddle '[] where
+	memoryBindsToMiddle _ HPList.Nil = pure []
+
+instance (Memory.RawOffsetToOffset ibargs i, MemoryBindsToMiddle sais) =>
+	MemoryBindsToMiddle ('(sm, ibargs, i) ': sais) where
+	memoryBindsToMiddle dv (U3 mb :** mbs) = (:)
+		<$> memoryBindToMiddle dv mb
+		<*> memoryBindsToMiddle dv mbs
