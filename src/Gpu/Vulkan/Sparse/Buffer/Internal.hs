@@ -9,6 +9,7 @@
 module Gpu.Vulkan.Sparse.Buffer.Internal where
 
 import Data.TypeLevel.Tuple.Uncurry
+import Data.HeteroParList (pattern (:**))
 import Data.HeteroParList qualified as HPList
 
 import Gpu.Vulkan.Device qualified as Device
@@ -31,3 +32,24 @@ memoryBindInfoToMiddle dv MemoryBindInfo {
 	pure M.MemoryBindInfo {
 		M.memoryBindInfoBuffer = b,
 		M.memoryBindInfoBinds = mbs }
+
+class MemoryBindInfosToMiddle mbias where
+	memoryBindInfosToMiddle ::
+		Device.D sd ->
+		HPList.PL (U4 MemoryBindInfo) mbias -> IO [M.MemoryBindInfo]
+
+instance MemoryBindInfosToMiddle '[] where
+	memoryBindInfosToMiddle _ HPList.Nil = pure []
+
+instance (MemoryBindsToMiddle sais, MemoryBindInfosToMiddle mbias) =>
+	MemoryBindInfosToMiddle ('(sb, bnm, objs, sais) ': mbias) where
+	memoryBindInfosToMiddle dv (U4 mbi :** mbis) = (:)
+		<$> memoryBindInfoToMiddle dv mbi
+		<*> memoryBindInfosToMiddle dv mbis
+
+{-
+memoryBindInfosToMiddle ::
+	HPList.ToListWithCM' MemoryBindsToMiddle I3_4 mbias =>
+	Device.D sd -> HPList.PL (U4 MemoryBindInfo) mbias -> IO [M.MemoryBindInfo]
+memoryBindInfosToMiddle dv = toListWithCM' (\U4 mbi -> memoryBindInfoToMiddle dv mbi)
+-}

@@ -36,6 +36,20 @@ opaqueMemoryBindInfoToMiddle dv OpaqueMemoryBindInfo {
 		M.opaqueMemoryBindInfoImage = i,
 		M.opaqueMemoryBindInfoBinds = mbs }
 
+class OpaqueMemoryBindInfosToMiddle ombias where
+	opaqueMemoryBindInfosToMiddle ::
+		Device.D sd -> HPList.PL (U4 OpaqueMemoryBindInfo) ombias ->
+		IO [M.OpaqueMemoryBindInfo]
+
+instance OpaqueMemoryBindInfosToMiddle '[] where
+	opaqueMemoryBindInfosToMiddle _ HPList.Nil = pure []
+
+instance (S.MemoryBindsToMiddle sais, OpaqueMemoryBindInfosToMiddle ombias) =>
+	OpaqueMemoryBindInfosToMiddle ('(si, inm, fmt, sais) ': ombias) where
+	opaqueMemoryBindInfosToMiddle dv (U4 ombi :** ombis) = (:)
+		<$> opaqueMemoryBindInfoToMiddle dv ombi
+		<*> opaqueMemoryBindInfosToMiddle dv ombis
+
 data MemoryBindInfo si inm fmt sais = MemoryBindInfo {
 	memoryBindInfoImage :: Image.I si inm fmt,
 	memoryBindInfoBinds :: HPList.PL (U3 MemoryBind) sais }
@@ -50,6 +64,20 @@ memoryBindInfoToMiddle dv MemoryBindInfo {
 	pure M.MemoryBindInfo {
 		M.memoryBindInfoImage = mi,
 		M.memoryBindInfoBinds = mbs }
+
+class MemoryBindInfosToMiddle mbias where
+	memoryBindInfosToMiddle ::
+		Device.D sd ->
+		HPList.PL (U4 MemoryBindInfo) mbias -> IO [M.MemoryBindInfo]
+
+instance MemoryBindInfosToMiddle '[] where
+	memoryBindInfosToMiddle _ HPList.Nil = pure []
+
+instance (MemoryBindsToMiddle sais, MemoryBindInfosToMiddle mbias) =>
+	MemoryBindInfosToMiddle ('(si, inm, fmt, sais) ': mbias) where
+	memoryBindInfosToMiddle dv (U4 mbi :** mbis) = (:)
+		<$> memoryBindInfoToMiddle dv mbi
+		<*> memoryBindInfosToMiddle dv mbis
 
 data MemoryBind sm ibargs i = MemoryBind {
 	memoryBindSubresource :: Image.Subresource,
