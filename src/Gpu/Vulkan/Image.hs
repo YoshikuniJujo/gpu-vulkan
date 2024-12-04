@@ -31,6 +31,10 @@ module Gpu.Vulkan.Image (
 
 	Blit(..), SubresourceLayers(..),
 
+	-- * OTHERS
+
+	Subresource(..),
+
 	-- * ENUM
 
 	module Gpu.Vulkan.Image.Enum
