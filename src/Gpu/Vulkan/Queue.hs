@@ -48,6 +48,9 @@ import Gpu.Vulkan.Semaphore.Internal qualified as Semaphore
 import Gpu.Vulkan.Sparse.Buffer.Internal qualified as Sparse.Buffer
 import Gpu.Vulkan.Sparse.Image.Internal qualified as Sparse.Image
 
+import Control.Monad
+import Debug
+
 submit :: SubmitInfoListToMiddle sias => M.Q ->
 	HeteroParList.PL (U4 SubmitInfo) sias -> Maybe (Fence.F sf) -> IO ()
 submit q sis mf =
@@ -64,7 +67,11 @@ bindSparse dv q is mf = do
 	let	mmf = case mf of
 			Just (Fence.F f) -> Just f
 			Nothing -> Nothing
+	when debug $ putStrLn
+		"Gpu.Vulkan.Queue.bindSparse: before bindSparseInfoToMiddle"
 	mis <- bindSparseInfosToMiddle dv is
+	when debug $ putStrLn
+		"Gpu.Vulkan.Queue.bindSparse: before M.bindSparse"
 	M.bindSparse q mis mmf
 
 data BindSparseInfo mn swss bbs iobs ibs ssss = BindSparseInfo {
