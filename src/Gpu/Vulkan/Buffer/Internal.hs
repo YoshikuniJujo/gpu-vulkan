@@ -36,7 +36,11 @@ module Gpu.Vulkan.Buffer.Internal (
 
 	-- * MEMORY BARRIER
 
-	MemoryBarrier(..), MemoryBarrierListToMiddle(..)
+	MemoryBarrier(..), MemoryBarrierListToMiddle(..),
+
+	-- * UNSAFE
+
+	unsafeToBinded
 	
 	) where
 

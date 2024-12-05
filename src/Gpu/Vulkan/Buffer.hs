@@ -33,6 +33,10 @@ module Gpu.Vulkan.Buffer (
 
 	MemoryBarrier(..), MemoryBarrierListToMiddle,
 
+	-- * UNSAFE
+
+	unsafeToBinded,
+
 	-- * ENUM
 
 	module Gpu.Vulkan.Buffer.Enum

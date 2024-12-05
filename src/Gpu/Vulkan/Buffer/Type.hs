@@ -34,3 +34,6 @@ deriving instance Show (HeteroParList.PL VObj.Length objs) =>
 
 deriving instance Eq (HeteroParList.PL VObj.Length objs) =>
 	Eq (Binded sm sb nm objs)
+
+unsafeToBinded :: B sb nm objs -> Binded sm sb nm objs
+unsafeToBinded (B l b) = (Binded l b)
