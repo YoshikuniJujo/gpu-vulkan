@@ -146,11 +146,11 @@ instance (KnownNat algn, Seq.IsSequence v, S.Storable t, Element v ~ t) =>
 
 instance (KnownNat algn, IsImage img, Seq.IsSequence v, Element v ~ img) =>
 	Store v ((Image algn img nm)) where
-	store p0 (LengthImage (fromIntegral -> r) (fromIntegral -> w) (fromIntegral -> h) _ (fromIntegral -> lc)) imgs =
-		for_ (zip (iterate (`plusPtr` s') p0) . take lc $ otoList imgs) \(p, i) -> go1 p i
---		for_ (zip (iterate (`plusPtr` s) p0) . imageBody . head $ otoList imgs)
---			\(p, take w -> rw) -> pokeArray (castPtr p) rw
+	store p0 (LengthImage (fromIntegral -> r) (fromIntegral -> w) (fromIntegral -> h) _ (fromIntegral -> lc)) imgs = do
+		maybe (pure ()) error $ checkSizes is
+		for_ (zip (iterate (`plusPtr` s') p0) $ take lc is) \(p, i) -> go1 p i
 		where
+		is = otoList imgs
 		go1 :: Ptr a -> img -> IO ()
 		go1 p img = for_ (zip (iterate (`plusPtr` s) p) $ imageBody img)
 			\(p1, take w -> rw) -> pokeArray (castPtr p1) rw
@@ -171,6 +171,16 @@ instance (KnownNat algn, IsImage img, Seq.IsSequence v, Element v ~ img) =>
 		(imageRow img) (imageWidth img) (imageHeight img)
 		(imageDepth img) (fromIntegral . L.length $ otoList imgs)
 		where img = head $ otoList imgs
+
+checkSizes :: IsImage img => [img] -> Maybe String
+checkSizes [] = Just "at least one layer required"
+checkSizes (img : imgs) = if all ck imgs
+	then Nothing else Just "all layers should be same size"
+	where
+	ck i = imageRow i == r && imageWidth i == w &&
+		imageHeight i == h && imageDepth i == d
+	r = imageRow img; w = imageWidth img
+	h = imageHeight img; d = imageDepth img
 
 -- SIZE AND ALIGNMENT
 

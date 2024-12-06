@@ -45,6 +45,7 @@ module Gpu.Vulkan.Object (
 	pattern LengthList,
 	pattern LengthImage,
 	lengthImageRow, lengthImageWidth, lengthImageHeight, lengthImageDepth,
+	lengthImageLayerCount,
 
 	pattern LengthDynAtom,
 	pattern LengthDynList,
@@ -81,10 +82,6 @@ module Gpu.Vulkan.Object (
 	-- ** Size AlignmentList
 
 	SizeAlignmentList(..), SizeAlignment(..),
-
-	-- ** Others
-
-	alignment
 
 	) where
 
