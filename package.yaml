@@ -34,7 +34,7 @@ dependencies:
 - data-default < 1
 - text < 3
 - time < 2
-- gpu-vulkan-middle < 1
+- gpu-vulkan-middle >= 0.1.0.60 && < 1
 - language-spir-v < 1
 - storable-peek-poke < 1
 - storable-hetero-list < 1
