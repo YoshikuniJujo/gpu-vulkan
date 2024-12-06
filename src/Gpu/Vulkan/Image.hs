@@ -33,7 +33,7 @@ module Gpu.Vulkan.Image (
 
 	-- * OTHERS
 
-	Subresource(..),
+	Subresource(..), unsafeToBinded,
 
 	-- * ENUM
 

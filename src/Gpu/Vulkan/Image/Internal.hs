@@ -35,7 +35,7 @@ module Gpu.Vulkan.Image.Internal (
 
 	-- * OTHERS
 
-	M.Subresource(..)
+	M.Subresource(..), unsafeToBinded
 
 	) where
 
