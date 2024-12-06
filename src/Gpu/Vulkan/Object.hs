@@ -168,13 +168,13 @@ pattern LengthList' n <- LengthStatic (K.LengthList (Device.M.Size n)) where
 {-# COMPLETE LengthImage #-}
 
 pattern LengthImage ::
-	Device.M.Size -> Device.M.Size -> Device.M.Size -> Device.M.Size ->
+	Device.M.Size -> Device.M.Size -> Device.M.Size -> Device.M.Size -> Device.M.Size ->
 	Length ('Static_ (K.ImageMaybeName algn v mnm))
 pattern LengthImage {
 	lengthImageRow, lengthImageWidth,
-	lengthImageHeight, lengthImageDepth } = LengthStatic (K.LengthImage
+	lengthImageHeight, lengthImageDepth, lengthImageLayerCount } = LengthStatic (K.LengthImage
 		lengthImageRow lengthImageWidth
-		lengthImageHeight lengthImageDepth)
+		lengthImageHeight lengthImageDepth lengthImageLayerCount)
 
 pattern LengthDynAtom :: Length ('Dynamic n (K.Atom algn v nm))
 pattern LengthDynAtom <- LengthDynamic K.LengthAtom where
@@ -185,9 +185,9 @@ pattern LengthDynList n <- LengthDynamic (K.LengthList n) where
 	LengthDynList n = LengthDynamic (K.LengthList n)
 
 pattern LengthDynImage ::
-	Device.M.Size -> Device.M.Size -> Device.M.Size -> Device.M.Size -> Length ('Dynamic n (K.Image algn v nm))
-pattern LengthDynImage kr kw kh kd <- (LengthDynamic (K.LengthImage kr kw kh kd))
-	where LengthDynImage kr kw kh kd = LengthDynamic (K.LengthImage kr kw kh kd)
+	Device.M.Size -> Device.M.Size -> Device.M.Size -> Device.M.Size -> Device.M.Size -> Length ('Dynamic n (K.Image algn v nm))
+pattern LengthDynImage kr kw kh kd klc <- (LengthDynamic (K.LengthImage kr kw kh kd klc))
+	where LengthDynImage kr kw kh kd klc = LengthDynamic (K.LengthImage kr kw kh kd klc)
 
 class LengthOf (obj :: O) (objs :: [O]) where
 	lengthOf :: HeteroParList.PL Length objs -> Length obj

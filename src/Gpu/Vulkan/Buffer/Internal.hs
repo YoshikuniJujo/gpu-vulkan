@@ -395,4 +395,4 @@ imageCopyToMiddle (Binded lns _) ImageCopy {
 	M.imageCopyImageExtent = iext }
 	where
 	(ost, _) = VObj.offsetRange @(VObj.Image algn img inm) @_ @0 0 lns
-	VObj.LengthImage r _w h _d = VObj.lengthOf @obj lns
+	VObj.LengthImage r _w h _d _lc = VObj.lengthOf @obj lns

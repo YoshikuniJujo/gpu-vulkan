@@ -57,6 +57,8 @@ import Gpu.Vulkan.TypeEnum qualified as T
 
 import Gpu.Vulkan.Device.Middle qualified as Device.M
 
+import Data.List qualified as L
+
 -- OBJECT
 
 data O = O Alignment (Maybe Symbol) ObjectType Type
@@ -107,7 +109,8 @@ data Length (obj :: O) where
 		lengthImageRow :: Device.M.Size,
 		lengthImageWidth :: Device.M.Size,
 		lengthImageHeight :: Device.M.Size,
-		lengthImageDepth :: Device.M.Size } ->
+		lengthImageDepth :: Device.M.Size,
+		lengthImageLayerCount :: Device.M.Size } ->
 		Length ('O algn mnm ImageT t)
 
 deriving instance Eq (Length obj)
@@ -115,12 +118,12 @@ deriving instance Show (Length obj)
 
 instance Default (Length (Atom algn t mnm)) where def = LengthAtom
 instance Default (Length (List algn t nm)) where def = LengthList 0
-instance Default (Length (Image algn t nm)) where def = LengthImage 0 0 0 0
+instance Default (Length (Image algn t nm)) where def = LengthImage 0 0 0 0 0
 
 renameLength :: Length ('O algn mnm ot t) -> Length ('O algn mnm' ot t)
 renameLength LengthAtom = LengthAtom
 renameLength (LengthList n) = LengthList n
-renameLength (LengthImage r w h d) = LengthImage r w h d
+renameLength (LengthImage r w h d lc) = LengthImage r w h d lc
 
 -- STORE OBJECT
 
@@ -141,22 +144,33 @@ instance (KnownNat algn, Seq.IsSequence v, S.Storable t, Element v ~ t) =>
 	load p (LengthList (fromIntegral -> n)) = Seq.fromList <$> peekArray n p
 	length = LengthList . fromIntegral . olength
 
-instance (KnownNat algn, IsImage img) =>
-	Store img ((Image algn img nm)) where
-	store p0 (LengthImage (fromIntegral -> r) (fromIntegral -> w) _ _) img =
-		for_ (zip (iterate (`plusPtr` s) p0) $ imageBody img)
-			\(p, take w -> rw) -> pokeArray (castPtr p) rw
-		where s = r * S.sizeOf @(ImagePixel img) undefined
+instance (KnownNat algn, IsImage img, Seq.IsSequence v, Element v ~ img) =>
+	Store v ((Image algn img nm)) where
+	store p0 (LengthImage (fromIntegral -> r) (fromIntegral -> w) (fromIntegral -> h) _ (fromIntegral -> lc)) imgs =
+		for_ (zip (iterate (`plusPtr` s') p0) . take lc $ otoList imgs) \(p, i) -> go1 p i
+--		for_ (zip (iterate (`plusPtr` s) p0) . imageBody . head $ otoList imgs)
+--			\(p, take w -> rw) -> pokeArray (castPtr p) rw
+		where
+		go1 :: Ptr a -> img -> IO ()
+		go1 p img = for_ (zip (iterate (`plusPtr` s) p) $ imageBody img)
+			\(p1, take w -> rw) -> pokeArray (castPtr p1) rw
+		s = r * S.sizeOf @(ImagePixel img) undefined
+		s' = s * h
 	load p0 (LengthImage (fromIntegral -> r)
 		w_@(fromIntegral -> w) h_@(fromIntegral -> h)
-		d_@(fromIntegral -> d)) =
-		imageMake w_ h_ d_
-			<$> for (take (h * d) $ iterate (`plusPtr` s) p0) \p ->
-				peekArray w (castPtr p)
-		where s = r * (S.sizeOf @(ImagePixel img) undefined)
-	length img = LengthImage
+		d_@(fromIntegral -> d) (fromIntegral -> lc)) = Seq.fromList <$>
+		for (take lc $ iterate (`plusPtr` s') p0) go1
+		where
+		go1 :: Ptr a -> IO img
+		go1 p = (imageMake w_ h_ d_
+			<$> for (take (h * d) $ iterate (`plusPtr` s) p) \p1 ->
+				peekArray w (castPtr p1))
+		s = r * (S.sizeOf @(ImagePixel img) undefined)
+		s' = s * h
+	length imgs = LengthImage
 		(imageRow img) (imageWidth img) (imageHeight img)
-		(imageDepth img)
+		(imageDepth img) (fromIntegral . L.length $ otoList imgs)
+		where img = head $ otoList imgs
 
 -- SIZE AND ALIGNMENT
 
@@ -183,7 +197,7 @@ instance (KnownNat algn, S.Storable t) => SizeAlignment (ListMaybeName algn t _n
 
 instance (KnownNat algn, S.Storable (ImagePixel img)) =>
 	SizeAlignment ((ImageMaybeName algn img nm)) where
-	size (LengthImage r _w h d) = r * h * d * applyAlign algn sz
+	size (LengthImage r _w h d lc) = r * h * d * lc * applyAlign algn sz
 		where
 		sz = fromIntegral $ S.sizeOf @(ImagePixel img) undefined
 		algn = alignment @((ImageMaybeName algn img nm))
