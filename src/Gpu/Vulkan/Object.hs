@@ -350,14 +350,18 @@ type Size = Device.M.Size
 type ObjAlignment = Device.M.Size
 
 class SizeAlignmentList objs where
+	sizeAlignmentListWholeAlignment :: ObjAlignment
 	sizeAlignmentList :: HeteroParList.PL Length objs ->
 		HeteroParList.PL SizeAlignmentOf objs
 
 instance SizeAlignmentList '[] where
+	sizeAlignmentListWholeAlignment = 1
 	sizeAlignmentList HeteroParList.Nil = HeteroParList.Nil
 
 instance (SizeAlignment obj, SizeAlignmentList objs) =>
 	SizeAlignmentList (obj ': objs) where
+	sizeAlignmentListWholeAlignment =
+		alignment @obj `lcm` sizeAlignmentListWholeAlignment @objs
 	sizeAlignmentList (ln :** lns) =
 		SizeAlignmentOf
 			(dynNum @obj) (size ln) (alignment @obj) :**

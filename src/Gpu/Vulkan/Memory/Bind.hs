@@ -58,13 +58,13 @@ instance BindAll ibargs mibargs =>
 		(U2 (ImageBinded $ Image.Binded i) :**)
 			<$> bindAll dv ibs m (ost' + sz)
 
-instance (VObj.SizeAlignment obj, BindAll ibargs mibargs) =>
-	BindAll ('(sb, ('BufferArg nm (obj ': objs))) ': ibargs) mibargs where
+instance (VObj.SizeAlignmentList objs, BindAll ibargs mibargs) =>
+	BindAll ('(sb, ('BufferArg nm objs)) ': ibargs) mibargs where
 	bindAll dv@(Device.D mdv)
 		(U2 bb@(Buffer (Buffer.B lns b)) :** ibs) m ost  = do
 		(_, mm) <- readM m
 		(ost', sz) <- adjustOffsetSize dv bb ost
-		let	ost'' = adjust (VObj.alignment @obj) ost'
+		let	ost'' = adjust (VObj.sizeAlignmentListWholeAlignment @objs) ost'
 		when debug . putStrLn $ "Gpu.Vulkan.Memory.Bind.BindAll (BufferArg): " ++ show (ost', sz)
 		when debug . putStrLn $ "Gpu.Vulkan.Memory.Bind.BindAll (BufferArg): ost'' = " ++ show ost''
 		Buffer.M.bindMemory mdv b mm ost''
