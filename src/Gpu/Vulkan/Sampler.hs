@@ -2,14 +2,14 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE MonoLocalBinds #-}
 {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE PatternSynonyms, ViewPatterns #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
 module Gpu.Vulkan.Sampler (
 
 	-- * CREATE
 
-	create, S, M.CreateInfo(..),
+	create, S, pattern Null, M.CreateInfo(..),
 
 	-- * ENUM
 
