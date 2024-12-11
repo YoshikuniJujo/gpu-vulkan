@@ -15,7 +15,8 @@ module Gpu.Vulkan.Internal (
 	-- ** ApplicationINfo
 
 	M.ApplicationInfo(..),
-	M.ApiVersion, M.makeApiVersion, M.apiVersion_1_0, M.apiVersion_1_1,
+	M.ApiVersion, M.makeApiVersion,
+	M.apiVersion_1_0, M.apiVersion_1_1, M.apiVersion_1_2, M.apiVersion_1_3,
 
 	-- ** SubmitInfo
 
