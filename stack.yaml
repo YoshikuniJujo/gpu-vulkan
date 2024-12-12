@@ -18,7 +18,7 @@
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
 
-resolver: nightly-2024-11-28
+resolver: nightly-2024-12-12
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -47,6 +47,9 @@ extra-deps:
   - git: https://github.com/YoshikuniJujo/gpu-vulkan-core.git
     commit: e69e2c7cd37e0feec1a496fbd467272b22d939a2
   - language-spir-v-0.1.0.1
+  - exception-hierarchy-0.1.0.12
+  - ranged-list-0.1.2.3
+  - typecheck-plugin-nat-simple-0.1.0.11
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
