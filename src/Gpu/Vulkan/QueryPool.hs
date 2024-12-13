@@ -36,7 +36,6 @@ import Data.Word
 import Gpu.Vulkan.AllocationCallbacks qualified as AllocationCallbacks
 import Gpu.Vulkan.AllocationCallbacks.Type qualified as AllocationCallbacks
 import Gpu.Vulkan.PhysicalDevice qualified as PhysicalDevice
-import Gpu.Vulkan.PhysicalDevice.Struct qualified as PhysicalDevice
 import Gpu.Vulkan.Device.Type qualified as Device
 import Gpu.Vulkan.Query qualified as Q
 import Gpu.Vulkan.QueryPool.Type

@@ -37,9 +37,10 @@ module Gpu.Vulkan.PhysicalDevice (
 	module Gpu.Vulkan.PhysicalDevice.Enum,
 
 	Limits(..), Features(..),
-	Vulkan12Features(..), Vulkan12FeaturesNoNext(..),
-	Vulkan13Features(..), Vulkan13FeaturesNoNext(..),
-	DescriptorIndexingFeatures(..), DescriptorIndexingFeaturesNoNext(..)
+	Vulkan12Features(..), Vulkan12FeaturesNoNext(..), vulkan12FeaturesZero,
+	Vulkan13Features(..), Vulkan13FeaturesNoNext(..), vulkan13FeaturesZero,
+	DescriptorIndexingFeatures(..), DescriptorIndexingFeaturesNoNext(..),
+	descriptorIndexingFeaturesZero
 
 	) where
 
