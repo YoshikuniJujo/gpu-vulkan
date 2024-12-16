@@ -44,7 +44,7 @@ module Gpu.Vulkan.Memory (
 
 	-- * BARRIER
 
-	M.Barrier(..),
+	M.Barrier(..), M.Barrier2(..),
 
 	-- * OTHERS
 
