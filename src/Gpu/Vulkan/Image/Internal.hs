@@ -26,8 +26,9 @@ module Gpu.Vulkan.Image.Internal (
 
 	-- * MEMORY BARRIER
 
-	MemoryBarrier(..), M.SubresourceRange(..),
-	MemoryBarrierListToMiddle(..),
+	MemoryBarrier(..), MemoryBarrierListToMiddle(..),
+	MemoryBarrier2(..),
+	M.SubresourceRange(..),
 
 	-- * BLIT
 
@@ -66,6 +67,8 @@ import qualified Gpu.Vulkan.Memory.Middle as Memory
 import qualified Gpu.Vulkan.Image.Middle as M
 import qualified Gpu.Vulkan.Sample.Enum as Sample
 import qualified Gpu.Vulkan.Image.Enum as I
+
+import qualified Gpu.Vulkan.Pipeline as Pipeline
 
 create :: (
 	WithPoked (TMaybe.M mn), T.FormatToValue fmt,
@@ -176,6 +179,18 @@ instance  MemoryBarrierListToMiddle mbargs =>
 	MemoryBarrierListToMiddle ('(mn, si, sm, nm, fmt) ': mbargs) where
 	memoryBarrierListToMiddle (U5 mb :** mbs) =
 		memoryBarrierToMiddle mb :** memoryBarrierListToMiddle mbs
+
+data MemoryBarrier2 mn sm si nm fmt = MemoryBarrier2 {
+	memoryBarrier2Next :: TMaybe.M mn,
+	memoryBarrier2SrcStageMask :: Pipeline.StageFlags2,
+	memoryBarrier2SrcAccessMask :: AccessFlags2,
+	memoryBarrier2DstStageMask :: Pipeline.StageFlags2,
+	memoryBarrier2DstAccessMask :: AccessFlags2,
+	memoryBarrier2OldLayout :: Layout, memoryBarrier2NewLayout :: Layout,
+	memoryBarrier2SrcQueueFamilyIndex :: QueueFamily.Index,
+	memoryBarrier2DstQueueFamilyIndex :: QueueFamily.Index,
+	memoryBarrier2Image :: Binded sm si nm fmt,
+	memoryBarrier2SubresourceRange :: M.SubresourceRange }
 
 data CreateInfo mn (fmt :: T.Format) = CreateInfo {
 	createInfoNext :: TMaybe.M mn,
