@@ -43,9 +43,9 @@ packages:
 
 extra-deps:
   - git: https://github.com/YoshikuniJujo/gpu-vulkan-middle.git
-    commit: 172a7bad69fc0583c4edf69602e5eb362b484c43
+    commit: 81fd8d2d425dcf39fcc47cbbda2f9575724568ea
   - git: https://github.com/YoshikuniJujo/gpu-vulkan-core.git
-    commit: 1ba8f33c74ab33a18c57e443c591d4cf70af8c15
+    commit: 0290ecd5bff27d06433db903dbb42ee3dfa9d851
   #  - gpu-vulkan-middle-0.1.0.64
   #  - gpu-vulkan-core-0.1.0.16
   - language-spir-v-0.1.0.1
