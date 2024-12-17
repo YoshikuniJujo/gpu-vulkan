@@ -192,6 +192,31 @@ data MemoryBarrier2 mn sm si nm fmt = MemoryBarrier2 {
 	memoryBarrier2Image :: Binded sm si nm fmt,
 	memoryBarrier2SubresourceRange :: M.SubresourceRange }
 
+memoryBarrier2ToMiddle :: MemoryBarrier2 mn si sm nm fmt -> M.MemoryBarrier2 mn
+memoryBarrier2ToMiddle MemoryBarrier2 {
+	memoryBarrier2Next = mnxt,
+	memoryBarrier2SrcStageMask = ssm,
+	memoryBarrier2SrcAccessMask = sam,
+	memoryBarrier2DstStageMask = dsm,
+	memoryBarrier2DstAccessMask = dam,
+	memoryBarrier2OldLayout = ol,
+	memoryBarrier2NewLayout = nl,
+	memoryBarrier2SrcQueueFamilyIndex = sqfi,
+	memoryBarrier2DstQueueFamilyIndex = dqfi,
+	memoryBarrier2Image = Binded img,
+	memoryBarrier2SubresourceRange = srr } = M.MemoryBarrier2 {
+	M.memoryBarrier2Next = mnxt,
+	M.memoryBarrier2SrcStageMask = ssm,
+	M.memoryBarrier2SrcAccessMask = sam,
+	M.memoryBarrier2DstStageMask = dsm,
+	M.memoryBarrier2DstAccessMask = dam,
+	M.memoryBarrier2OldLayout = ol,
+	M.memoryBarrier2NewLayout = nl,
+	M.memoryBarrier2SrcQueueFamilyIndex = sqfi,
+	M.memoryBarrier2DstQueueFamilyIndex = dqfi,
+	M.memoryBarrier2Image = img,
+	M.memoryBarrier2SubresourceRange = srr }
+
 data CreateInfo mn (fmt :: T.Format) = CreateInfo {
 	createInfoNext :: TMaybe.M mn,
 	createInfoFlags :: CreateFlags,
