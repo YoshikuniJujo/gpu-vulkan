@@ -32,6 +32,7 @@ module Gpu.Vulkan.Buffer (
 	-- * MEMORY BARRIER
 
 	MemoryBarrier(..), MemoryBarrierListToMiddle,
+	MemoryBarrier2(..), MemoryBarrier2ListToMiddle,
 
 	-- * UNSAFE
 

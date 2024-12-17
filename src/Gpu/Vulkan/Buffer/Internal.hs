@@ -37,6 +37,7 @@ module Gpu.Vulkan.Buffer.Internal (
 	-- * MEMORY BARRIER
 
 	MemoryBarrier(..), MemoryBarrierListToMiddle(..),
+	MemoryBarrier2(..), MemoryBarrier2ListToMiddle(..),
 
 	-- * UNSAFE
 
@@ -77,6 +78,8 @@ import Gpu.Vulkan.Buffer.Type
 import Control.Concurrent.STM
 import Control.Concurrent.STM.TSem
 import Data.Map qualified as Map
+
+import qualified Gpu.Vulkan.Pipeline as Pipeline
 
 data CreateInfo mn objs = CreateInfo {
 	createInfoNext :: TMaybe.M mn,
@@ -326,20 +329,18 @@ memoryBarrierToMiddle :: forall n sm sb nm obj .
 	MemoryBarrier n sm sb nm obj -> M.MemoryBarrier n
 memoryBarrierToMiddle MemoryBarrier {
 	memoryBarrierNext = mnxt,
-	memoryBarrierSrcAccessMask = sam,
-	memoryBarrierDstAccessMask = dam,
+	memoryBarrierSrcAccessMask = sam, memoryBarrierDstAccessMask = dam,
 	memoryBarrierSrcQueueFamilyIndex = sqfi,
 	memoryBarrierDstQueueFamilyIndex = dqfi,
-	memoryBarrierBuffer = Binded lns b :: Binded sm sb nm objs } =
-	M.MemoryBarrier {
-		M.memoryBarrierNext = mnxt,
-		M.memoryBarrierSrcAccessMask = sam,
-		M.memoryBarrierDstAccessMask = dam,
-		M.memoryBarrierSrcQueueFamilyIndex = sqfi,
-		M.memoryBarrierDstQueueFamilyIndex = dqfi,
-		M.memoryBarrierBuffer = b,
-		M.memoryBarrierOffset = ost,
-		M.memoryBarrierSize = sz }
+	memoryBarrierBuffer = Binded lns b } = M.MemoryBarrier {
+	M.memoryBarrierNext = mnxt,
+	M.memoryBarrierSrcAccessMask = sam,
+	M.memoryBarrierDstAccessMask = dam,
+	M.memoryBarrierSrcQueueFamilyIndex = sqfi,
+	M.memoryBarrierDstQueueFamilyIndex = dqfi,
+	M.memoryBarrierBuffer = b,
+	M.memoryBarrierOffset = ost,
+	M.memoryBarrierSize = sz }
 	where (ost, sz) = VObj.offsetRange @obj @_ @0 0 lns
 
 class MemoryBarrierListToMiddle nsmsbnmobjs where
@@ -354,6 +355,49 @@ instance MemoryBarrierListToMiddle nsmsbnmobjs =>
 	MemoryBarrierListToMiddle ('(mn, sm, sb, nm, obj) ': nsmsbnmobjs) where
 	memoryBarrierListToMiddle (U5 mb :** mbs) =
 		memoryBarrierToMiddle mb :** memoryBarrierListToMiddle mbs
+
+data MemoryBarrier2 mn sm sb nm obj = forall objs . (
+	VObj.OffsetRange obj objs 0, VObj.LengthOf obj objs ) =>
+	MemoryBarrier2 {
+		memoryBarrier2Next :: TMaybe.M mn,
+		memoryBarrier2SrcStageMask :: Pipeline.StageFlags2,
+		memoryBarrier2SrcAccessMask :: AccessFlags2,
+		memoryBarrier2DstStageMask :: Pipeline.StageFlags2,
+		memoryBarrier2DstAccessMask :: AccessFlags2,
+		memoryBarrier2SrcQueueFamilyIndex :: QueueFamily.Index,
+		memoryBarrier2DstQueueFamilyIndex :: QueueFamily.Index,
+		memoryBarrier2Buffer :: Binded sm sb nm objs }
+
+memoryBarrier2ToMiddle :: forall mn sm sb nm obj .
+	MemoryBarrier2 mn sm sb nm obj -> M.MemoryBarrier2 mn
+memoryBarrier2ToMiddle MemoryBarrier2 {
+	memoryBarrier2Next = mnxt,
+	memoryBarrier2SrcStageMask = ssm, memoryBarrier2SrcAccessMask = sam,
+	memoryBarrier2DstStageMask = dsm, memoryBarrier2DstAccessMask = dam,
+	memoryBarrier2SrcQueueFamilyIndex = sqfi,
+	memoryBarrier2DstQueueFamilyIndex = dqfi,
+	memoryBarrier2Buffer = Binded lns b } = M.MemoryBarrier2 {
+	M.memoryBarrier2Next = mnxt,
+	M.memoryBarrier2SrcStageMask = ssm, M.memoryBarrier2SrcAccessMask = sam,
+	M.memoryBarrier2DstStageMask = dsm, M.memoryBarrier2DstAccessMask = dam,
+	M.memoryBarrier2SrcQueueFamilyIndex = sqfi,
+	M.memoryBarrier2DstQueueFamilyIndex = dqfi,
+	M.memoryBarrier2Buffer = b,
+	M.memoryBarrier2Offset = ost, M.memoryBarrier2Size = sz }
+	where (ost, sz) = VObj.offsetRange @obj @_ @0 0 lns
+
+class MemoryBarrier2ListToMiddle nsmsbnmobjs where
+	memoryBarrier2ListToMiddle ::
+		HeteroParList.PL (U5 MemoryBarrier2) nsmsbnmobjs ->
+		HeteroParList.PL M.MemoryBarrier2 (TMapIndex.M0_5 nsmsbnmobjs)
+
+instance MemoryBarrier2ListToMiddle '[] where
+	memoryBarrier2ListToMiddle HeteroParList.Nil = HeteroParList.Nil
+
+instance MemoryBarrier2ListToMiddle nsmsbnmobjs =>
+	MemoryBarrier2ListToMiddle ('(mn, sm, sb, nm, obj) ': nsmsbnmobjs) where
+	memoryBarrier2ListToMiddle (U5 mb :** mbs) =
+		memoryBarrier2ToMiddle mb :** memoryBarrier2ListToMiddle mbs
 
 data ImageCopy img inm = ImageCopy {
 	imageCopyImageSubresource :: Image.M.SubresourceLayers,

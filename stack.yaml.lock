@@ -5,26 +5,26 @@
 
 packages:
 - completed:
-    commit: 4eda3bb82605d1e2fbf9b1b645cec6d6953d84fe
+    commit: 172a7bad69fc0583c4edf69602e5eb362b484c43
     git: https://github.com/YoshikuniJujo/gpu-vulkan-middle.git
     name: gpu-vulkan-middle
     pantry-tree:
-      sha256: e7c9865f01a4d668cd5554db5bbc5b21ae5412931871c2aa7d75c537fc9d725d
-      size: 15878
+      sha256: 45f2ad7d77127aae10ce98c08fac876052639a1f63947d549401bf87caa60da5
+      size: 15877
     version: 0.1.0.64
   original:
-    commit: 4eda3bb82605d1e2fbf9b1b645cec6d6953d84fe
+    commit: 172a7bad69fc0583c4edf69602e5eb362b484c43
     git: https://github.com/YoshikuniJujo/gpu-vulkan-middle.git
 - completed:
-    commit: 288fdd722397c0a6b7dd880e309bb992b968bd3f
+    commit: 1ba8f33c74ab33a18c57e443c591d4cf70af8c15
     git: https://github.com/YoshikuniJujo/gpu-vulkan-core.git
     name: gpu-vulkan-core
     pantry-tree:
-      sha256: 074098fa0e578e54b888c5b7510d2d6c796327acf2244297f2a2257e0504e868
+      sha256: 42acc1c97b22399e3c73d8f8a6fae09211af4bd0642d735ab2ad96fc7d87b139
       size: 5406
     version: 0.1.0.16
   original:
-    commit: 288fdd722397c0a6b7dd880e309bb992b968bd3f
+    commit: 1ba8f33c74ab33a18c57e443c591d4cf70af8c15
     git: https://github.com/YoshikuniJujo/gpu-vulkan-core.git
 - completed:
     hackage: language-spir-v-0.1.0.1@sha256:856ab0219ee0c2b5ae759ba7c5c8a7421bdc6a8a62f5a6bf05a9171fcfa9c8d0,1991
