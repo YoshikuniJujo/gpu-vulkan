@@ -27,7 +27,7 @@ module Gpu.Vulkan.Image.Internal (
 	-- * MEMORY BARRIER
 
 	MemoryBarrier(..), MemoryBarrierListToMiddle(..),
-	MemoryBarrier2(..),
+	MemoryBarrier2(..), MemoryBarrier2ListToMiddle(..),
 	M.SubresourceRange(..),
 
 	-- * BLIT
@@ -49,6 +49,7 @@ import Data.TypeLevel.Tuple.Uncurry
 import Data.TypeLevel.Tuple.MapIndex qualified as TMapIndex
 import Data.TypeLevel.Maybe qualified as TMaybe
 import Data.TypeLevel.ParMaybe qualified as TPMaybe
+import qualified Data.HeteroParList as HPList
 import qualified Data.HeteroParList as HeteroParList
 import Data.HeteroParList (pattern (:**))
 import Data.Word
@@ -216,6 +217,20 @@ memoryBarrier2ToMiddle MemoryBarrier2 {
 	M.memoryBarrier2DstQueueFamilyIndex = dqfi,
 	M.memoryBarrier2Image = img,
 	M.memoryBarrier2SubresourceRange = srr }
+
+class MemoryBarrier2ListToMiddle
+	(mbargs :: [(Maybe Type, Type, Type, Symbol, T.Format)])  where
+	memoryBarrier2ListToMiddle ::
+		HeteroParList.PL (U5 MemoryBarrier2) mbargs ->
+		HeteroParList.PL M.MemoryBarrier2 (TMapIndex.M0_5 mbargs)
+
+instance MemoryBarrier2ListToMiddle '[] where
+	memoryBarrier2ListToMiddle HPList.Nil = HPList.Nil
+
+instance  MemoryBarrier2ListToMiddle mbargs =>
+	MemoryBarrier2ListToMiddle ('(mn, si, sm, nm, fmt) ': mbargs) where
+	memoryBarrier2ListToMiddle (U5 mb :** mbs) =
+		memoryBarrier2ToMiddle mb :** memoryBarrier2ListToMiddle mbs
 
 data CreateInfo mn (fmt :: T.Format) = CreateInfo {
 	createInfoNext :: TMaybe.M mn,

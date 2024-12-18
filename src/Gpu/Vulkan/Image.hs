@@ -26,7 +26,7 @@ module Gpu.Vulkan.Image (
 	-- * MEMORY BARRIER
 
 	MemoryBarrier(..), MemoryBarrierListToMiddle,
-	MemoryBarrier2(..),
+	MemoryBarrier2(..), MemoryBarrier2ListToMiddle,
 	SubresourceRange(..),
 
 	-- * BLIT
