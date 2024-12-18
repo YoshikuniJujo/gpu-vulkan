@@ -43,7 +43,7 @@ copyBuffer, copyBufferToImage, copyImageToBuffer, blitImage,
 
 -- * MEMORY DEPENDENCY
 
-pipelineBarrier,
+pipelineBarrier, pipelineBarrier2,
 
 -- * QUERY
 
@@ -66,12 +66,14 @@ import Data.TypeLevel.List
 import Data.TypeLevel.Tuple.Uncurry
 import Data.TypeLevel.Tuple.Index qualified as TIndex
 import Data.TypeLevel.Tuple.MapIndex qualified as TMapIndex
+import qualified Data.HeteroParList as HPList
 import qualified Data.HeteroParList as HeteroParList
 import Data.HeteroParList (pattern (:**))
 import Data.Word
 import Data.Int
 
 import Gpu.Vulkan
+import Gpu.Vulkan.Internal
 import Gpu.Vulkan.TypeEnum qualified as T
 
 import qualified Gpu.Vulkan.CommandBuffer as CommandBuffer
@@ -290,6 +292,19 @@ pipelineBarrier (CommandBuffer.T.C cb) ssm dsm dfs mbs bmbs imbs =
 	M.pipelineBarrier cb ssm dsm dfs mbs
 		(Bffr.I.memoryBarrierListToMiddle bmbs)
 		(Image.I.memoryBarrierListToMiddle imbs)
+
+pipelineBarrier2 :: (
+	WithPoked (TMaybe.M mn),
+	HPList.ToListWithCCpsM' WithPoked TMaybe.M mbas, Length mbas,
+	HPList.ToListWithCCpsM' WithPoked TMaybe.M (TMapIndex.M0_5 bmbas),
+	Length (TMapIndex.M0_5 bmbas),
+	HPList.ToListWithCCpsM' WithPoked TMaybe.M (TMapIndex.M0_5 imbas),
+	Length (TMapIndex.M0_5 imbas),
+	Bffr.I.MemoryBarrier2ListToMiddle bmbas,
+	Image.I.MemoryBarrier2ListToMiddle imbas ) =>
+	CommandBuffer.C scb -> DependencyInfo mn mbas bmbas imbas -> IO ()
+pipelineBarrier2 (CommandBuffer.T.C cb) di =
+	M.pipelineBarrier2 cb $ dependencyInfoToMiddle di
 
 copyBufferToImage ::
 	forall (algn :: Nat) img inms scb smb sbb bnm objs smi si inm .
