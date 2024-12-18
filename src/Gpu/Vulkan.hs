@@ -82,6 +82,8 @@ module Gpu.Vulkan (
 
 	Size(..),
 
+	DependencyInfo(..),
+
 	-- * ENUM
 
 	module Gpu.Vulkan.Enum,

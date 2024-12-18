@@ -80,7 +80,9 @@ module Gpu.Vulkan.Internal (
 
 	-- * OTHERS
 
-	M.Size(..)
+	M.Size(..),
+
+	DependencyInfo(..), dependencyInfoToMiddle
 
 	) where
 
@@ -88,15 +90,22 @@ import Foreign.Storable.PeekPoke
 import Data.Kind
 import Data.TypeLevel.Maybe qualified as TMaybe
 import Data.TypeLevel.Tuple.Uncurry
+import Data.TypeLevel.Tuple.MapIndex qualified as TMapIndex
 import Data.HeteroParList qualified as HeteroParList
+import Data.HeteroParList qualified as HPList
 import Data.HeteroParList (pattern (:**))
 import Data.Text qualified as T
 
 import qualified Gpu.Vulkan.Middle as M
+import Gpu.Vulkan.Enum
 import qualified Gpu.Vulkan.Semaphore.Type as Semaphore
 import qualified Gpu.Vulkan.Semaphore.Middle as Semaphore.M
 import qualified Gpu.Vulkan.CommandBuffer.Type as CommandBuffer
 import qualified Gpu.Vulkan.Pipeline.Enum as Pipeline
+
+import Gpu.Vulkan.Memory.Middle qualified as Memory.M
+import {-# SOURCE #-} Gpu.Vulkan.Buffer.Internal qualified as Buffer
+import Gpu.Vulkan.Image.Internal qualified as Image
 
 data SubmitInfo n sss ss ssss = SubmitInfo {
 	submitInfoNext :: TMaybe.M n,
@@ -200,3 +209,32 @@ newtype LayerName = LayerName { unLayerName :: T.Text } deriving (Show, Eq)
 
 layerKhronosValidation :: LayerName
 layerKhronosValidation = LayerName "VK_LAYER_KHRONOS_validation"
+
+data DependencyInfo mn mbas bmbas imbas = DependencyInfo {
+	dependencyInfoNext :: TMaybe.M mn,
+	dependencyInfoDependencyFlags :: DependencyFlags,
+	dependencyInfoMemoryBarriers :: HPList.PL Memory.M.Barrier2 mbas,
+	dependencyInfoBufferMemoryBarriers ::
+		HPList.PL (U5 Buffer.MemoryBarrier2) bmbas,
+	dependencyInfoImageMemoryBarriers ::
+		HPList.PL (U5 Image.MemoryBarrier2) imbas }
+
+dependencyInfoToMiddle :: (
+	Buffer.MemoryBarrier2ListToMiddle bmbas,
+	Image.MemoryBarrier2ListToMiddle imbas ) =>
+	DependencyInfo mn mbas bmbas imbas ->
+	M.DependencyInfo mn mbas (TMapIndex.M0_5 bmbas) (TMapIndex.M0_5 imbas)
+dependencyInfoToMiddle DependencyInfo {
+	dependencyInfoNext = mnxt,
+	dependencyInfoDependencyFlags = fs,
+	dependencyInfoMemoryBarriers = mbs,
+	dependencyInfoBufferMemoryBarriers = bmbs,
+	dependencyInfoImageMemoryBarriers = imbs
+	} = M.DependencyInfo {
+	M.dependencyInfoNext = mnxt,
+	M.dependencyInfoDependencyFlags = fs,
+	M.dependencyInfoMemoryBarriers = mbs,
+	M.dependencyInfoBufferMemoryBarriers =
+		Buffer.memoryBarrier2ListToMiddle bmbs,
+	M.dependencyInfoImageMemoryBarriers =
+		Image.memoryBarrier2ListToMiddle imbs }
