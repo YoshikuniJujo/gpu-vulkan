@@ -54,6 +54,8 @@ module Gpu.Vulkan.Internal (
 
 	-- *** ClearColorValue
 
+	M.ClearColorValueToCore,
+
 	-- *** ClearDepthStencilValue
 
 	M.ClearDepthStencilValue, pattern M.ClearDepthStencilValue,

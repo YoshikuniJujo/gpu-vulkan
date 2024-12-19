@@ -41,6 +41,10 @@ DynamicIndex(..), GetDynamicLength,
 
 copyBuffer, copyBufferToImage, copyImageToBuffer, blitImage,
 
+-- * CLEAR COLOR IMAGE
+
+clearColorImage,
+
 -- * MEMORY DEPENDENCY
 
 pipelineBarrier, pipelineBarrier2,
@@ -97,6 +101,7 @@ import qualified Gpu.Vulkan.RenderPass.Internal as RenderPass
 import qualified Gpu.Vulkan.Subpass.Enum as Subpass
 import qualified Gpu.Vulkan.Cmd.Middle as M
 
+import qualified Gpu.Vulkan.Middle as M
 import qualified Gpu.Vulkan.Memory as Memory
 
 import Data.IORef -- for debug
@@ -351,3 +356,9 @@ writeTimestamp :: CommandBuffer.C sc -> Pipeline.StageFlagBits ->
 	QueryPool.Q sq QueryPool.Timestamp -> Query.Q -> IO ()
 writeTimestamp (CommandBuffer.T.C cb) sflgs (QueryPool.Q qp) i =
 	M.writeTimestamp cb sflgs qp i
+
+clearColorImage :: M.ClearColorValueToCore cct =>
+	CommandBuffer.C sc -> Image.Binded sm si nm fmt -> Image.Layout ->
+	ClearValue ('ClearTypeColor cct) -> [Image.SubresourceRange] -> IO ()
+clearColorImage (CommandBuffer.T.C cb) (Image.Binded img) lyt cv srrs =
+	M.clearColorImage cb img lyt cv srrs
