@@ -12,7 +12,7 @@ module Gpu.Vulkan.Semaphore (
 
 	-- * SUBMIT INFO
 
-	SubmitInfo(..)
+	SubmitInfo(..), SubmitInfoListToMiddle
 
 	) where
 

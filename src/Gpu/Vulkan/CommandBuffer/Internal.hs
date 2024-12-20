@@ -3,7 +3,7 @@
 {-# LANGUAGE ScopedTypeVariables, RankNTypes, TypeApplications #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE KindSignatures, TypeOperators #-}
 {-# LANGUAGE FlexibleContexts, UndecidableInstances #-}
 {-# LANGUAGE PatternSynonyms, ViewPatterns #-}
 {-# LANGUAGE StandaloneDeriving #-}
@@ -29,14 +29,18 @@ module Gpu.Vulkan.CommandBuffer.Internal (
 
 	-- * SUBMIT INFO
 
-	SubmitInfo(..), submitInfoToMiddle
+	SubmitInfo(..), SubmitInfoListToMiddle(..)
 
 	) where
 
 import Foreign.Storable.PeekPoke
 import Control.Exception
+import Data.TypeLevel.Tuple.Uncurry
+import Data.TypeLevel.Tuple.MapIndex qualified as TMapIndex
 import Data.TypeLevel.Maybe qualified as TMaybe
 import Data.TypeLevel.List qualified as TLength
+import Data.HeteroParList (pattern (:**))
+import Data.HeteroParList qualified as HPList
 import Data.HeteroParList qualified as HeteroParList
 import Data.Word
 
@@ -112,6 +116,19 @@ data SubmitInfo mn sc = SubmitInfo {
 	submitInfoNext :: TMaybe.M mn,
 	submitInfoCommandBuffer :: C sc,
 	submitInfoDeviceMask :: Word32 }
+
+class SubmitInfoListToMiddle mnscs where
+	submitInfoListToMiddle ::
+		HPList.PL (U2 SubmitInfo) mnscs ->
+		HPList.PL M.SubmitInfo (TMapIndex.M0_2 mnscs)
+
+instance SubmitInfoListToMiddle '[] where
+	submitInfoListToMiddle HPList.Nil = HPList.Nil
+
+instance SubmitInfoListToMiddle mnscs =>
+	SubmitInfoListToMiddle (mnsc ': mnscs) where
+	submitInfoListToMiddle (U2 si :** sis) =
+		submitInfoToMiddle si :** submitInfoListToMiddle sis
 
 submitInfoToMiddle :: SubmitInfo mn sc -> M.SubmitInfo mn
 submitInfoToMiddle SubmitInfo {

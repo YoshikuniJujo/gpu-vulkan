@@ -2,7 +2,10 @@
 {-# LANGUAGE BlockArguments #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE MonoLocalBinds #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
@@ -18,7 +21,7 @@ module Gpu.Vulkan.Semaphore.Internal (
 
 	-- * SUBMIT INFO
 
-	SubmitInfo(..), submitInfoToMiddle
+	SubmitInfo(..), SubmitInfoListToMiddle(..),
 
 	) where
 
@@ -27,9 +30,12 @@ import Foreign.Storable.PeekPoke
 import Control.Concurrent.STM
 import Control.Concurrent.STM.TSem
 import Control.Exception
+import Data.TypeLevel.Tuple.MapIndex qualified as TMapIndex
 import Data.TypeLevel.Maybe qualified as TMaybe
 import Data.TypeLevel.ParMaybe qualified as TPMaybe
 import Data.TypeLevel.Tuple.Uncurry
+import Data.HeteroParList (pattern (:**))
+import Data.HeteroParList qualified as HPList
 import Data.Map qualified as Map
 import Data.Word
 
@@ -107,6 +113,19 @@ data SubmitInfo mn ss = SubmitInfo {
 	submitInfoSemaphore :: S ss, submitInfoValue :: Word64,
 	submitInfoStageMask :: Pipeline.StageFlags2,
 	submitInfoDeviceIndex :: Word32 }
+
+class SubmitInfoListToMiddle mnsss where
+	submitInfoListToMiddle ::
+		HPList.PL (U2 SubmitInfo) mnsss ->
+		HPList.PL M.SubmitInfo (TMapIndex.M0_2 mnsss)
+
+instance SubmitInfoListToMiddle '[] where
+	submitInfoListToMiddle HPList.Nil = HPList.Nil
+
+instance SubmitInfoListToMiddle mnsss =>
+	SubmitInfoListToMiddle (mnss ': mnsss) where
+	submitInfoListToMiddle (U2 si :** sis) =
+		submitInfoToMiddle si :** submitInfoListToMiddle sis
 
 submitInfoToMiddle :: SubmitInfo mn ss -> M.SubmitInfo mn
 submitInfoToMiddle SubmitInfo {

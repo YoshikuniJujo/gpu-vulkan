@@ -23,6 +23,8 @@ module Gpu.Vulkan (
 	SubmitInfo(..),
 	SubmitInfoListToMiddle, SemaphorePipelineStageFlags(..),
 
+	SubmitInfo2(..), SubmitInfo2ListToMiddle,
+
 	-- * PROPERTIES
 
 	LayerProperties(..),

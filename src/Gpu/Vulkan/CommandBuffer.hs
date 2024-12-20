@@ -20,7 +20,7 @@ module Gpu.Vulkan.CommandBuffer (
 
 	-- * SUBMIT INFO
 
-	SubmitInfo(..),
+	SubmitInfo(..), SubmitInfoListToMiddle,
 
 	-- * ENUM
 

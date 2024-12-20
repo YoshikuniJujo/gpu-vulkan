@@ -12,7 +12,7 @@ module Gpu.Vulkan.Internal (
 
 	-- * INFO
 
-	-- ** ApplicationINfo
+	-- ** ApplicationInfo
 
 	M.ApplicationInfo(..),
 	M.ApiVersion, M.makeApiVersion,
@@ -22,6 +22,8 @@ module Gpu.Vulkan.Internal (
 
 	SubmitInfo(..),
 	SubmitInfoListToMiddle(..), SemaphorePipelineStageFlags(..),
+
+	SubmitInfo2(..), SubmitInfo2ListToMiddle(..),
 
 	-- * PROPERTIES
 
@@ -101,6 +103,7 @@ import Data.Text qualified as T
 import qualified Gpu.Vulkan.Middle as M
 import Gpu.Vulkan.Enum
 import qualified Gpu.Vulkan.Semaphore.Type as Semaphore
+import qualified Gpu.Vulkan.Semaphore.Internal as Semaphore
 import qualified Gpu.Vulkan.Semaphore.Middle as Semaphore.M
 import qualified Gpu.Vulkan.CommandBuffer.Type as CommandBuffer
 import qualified Gpu.Vulkan.Pipeline.Enum as Pipeline
@@ -108,6 +111,8 @@ import qualified Gpu.Vulkan.Pipeline.Enum as Pipeline
 import Gpu.Vulkan.Memory.Middle qualified as Memory.M
 import {-# SOURCE #-} Gpu.Vulkan.Buffer.Internal qualified as Buffer
 import Gpu.Vulkan.Image.Internal qualified as Image
+
+import Gpu.Vulkan.CommandBuffer.Internal qualified as CommandBuffer
 
 data SubmitInfo n sss ss ssss = SubmitInfo {
 	submitInfoNext :: TMaybe.M n,
@@ -155,6 +160,72 @@ submitInfoToMiddle SubmitInfo {
 data SemaphorePipelineStageFlags ss =
 	SemaphorePipelineStageFlags (Semaphore.S ss) Pipeline.StageFlags
 	deriving Show
+
+data SubmitInfo2 mn wsas cbas ssas = SubmitInfo2 {
+	submitInfo2Next :: TMaybe.M mn,
+	submitInfo2Flags :: SubmitFlags,
+	submitInfo2WaitSemaphoreInfos ::
+		HPList.PL (U2 Semaphore.SubmitInfo) wsas,
+	submitInfo2CommandBufferInfos ::
+		HPList.PL (U2 CommandBuffer.SubmitInfo) cbas,
+	submitInfo2SignalSemaphoreInfos ::
+		HPList.PL (U2 Semaphore.SubmitInfo) ssas }
+
+class SubmitInfo2ListToMiddle sias where
+	type family SubmitInfo2ArgsListToMiddle sias ::
+		[(Maybe Type, [Maybe Type], [Maybe Type], [Maybe Type])]
+	submitInfo2ListToMiddle ::
+		HPList.PL (U4 SubmitInfo2) sias ->
+		HPList.PL (U4 M.SubmitInfo2) (SubmitInfo2ArgsListToMiddle sias)
+
+instance SubmitInfo2ListToMiddle '[] where
+	type SubmitInfo2ArgsListToMiddle '[] = '[]
+	submitInfo2ListToMiddle HPList.Nil = HPList.Nil
+
+instance (
+	Semaphore.SubmitInfoListToMiddle wsas,
+	CommandBuffer.SubmitInfoListToMiddle cbas,
+	Semaphore.SubmitInfoListToMiddle ssas,
+	SubmitInfo2ListToMiddle sias ) =>
+	SubmitInfo2ListToMiddle ('(mn, wsas, cbas, ssas) ': sias) where
+	type SubmitInfo2ArgsListToMiddle ('(mn, wsas, cbas, ssas) ': sias) =
+		'(mn,	TMapIndex.M0_2 wsas,
+			TMapIndex.M0_2 cbas,
+			TMapIndex.M0_2 ssas) ': SubmitInfo2ArgsListToMiddle sias
+	submitInfo2ListToMiddle (U4 si :** sis) =
+		U4 (submitInfo2ToMiddle si) :** submitInfo2ListToMiddle sis
+
+{-
+type family SubmitInfo2ArgsListToMiddle sias where
+	SubmitInfo2ArgsListToMiddle '[] = '[]
+	SubmitInfo2ArgsListToMiddle ('(mn, wsas, cbas, ssas) ': sias) =
+		'(mn,	TMapIndex.M0_2 wsas,
+			TMapIndex.M0_2 cbas,
+			TMapIndex.M0_2 ssas) ': SubmitInfo2ArgsListToMiddle sias
+			-}
+
+submitInfo2ToMiddle :: (
+	Semaphore.SubmitInfoListToMiddle wsas,
+	CommandBuffer.SubmitInfoListToMiddle cbas,
+	Semaphore.SubmitInfoListToMiddle ssas ) =>
+	SubmitInfo2 mn wsas cbas ssas ->
+	M.SubmitInfo2 mn (TMapIndex.M0_2 wsas)
+		(TMapIndex.M0_2 cbas) (TMapIndex.M0_2 ssas)
+submitInfo2ToMiddle SubmitInfo2 {
+	submitInfo2Next = mnxt,
+	submitInfo2Flags = fs,
+	submitInfo2WaitSemaphoreInfos = wss,
+	submitInfo2CommandBufferInfos = cbs,
+	submitInfo2SignalSemaphoreInfos = sss
+	} = M.SubmitInfo2 {
+	M.submitInfo2Next = mnxt,
+	M.submitInfo2Flags = fs,
+	M.submitInfo2WaitSemaphoreInfos =
+		Semaphore.submitInfoListToMiddle wss,
+	M.submitInfo2CommandBufferInfos =
+		CommandBuffer.submitInfoListToMiddle cbs,
+	M.submitInfo2SignalSemaphoreInfos =
+		Semaphore.submitInfoListToMiddle sss }
 
 -- deriving instance (Show n, Show (HeteroParList SemaphorePipelineStageFlags sss)) =>
 --	Show (SubmitInfo n sss s vs)
