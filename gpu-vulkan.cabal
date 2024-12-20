@@ -5,7 +5,7 @@ cabal-version: 1.12
 -- see: https://github.com/sol/hpack
 
 name:           gpu-vulkan
-version:        0.1.0.161
+version:        0.1.0.162
 synopsis:       Vulkan library
 description:    Please see the README on GitHub at <https://github.com/YoshikuniJujo/gpu-vulkan#readme>
 category:       GPU
