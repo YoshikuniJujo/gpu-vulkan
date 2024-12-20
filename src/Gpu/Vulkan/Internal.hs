@@ -92,9 +92,10 @@ module Gpu.Vulkan.Internal (
 
 import Foreign.Storable.PeekPoke
 import Data.Kind
-import Data.TypeLevel.Maybe qualified as TMaybe
 import Data.TypeLevel.Tuple.Uncurry
 import Data.TypeLevel.Tuple.MapIndex qualified as TMapIndex
+import Data.TypeLevel.Maybe qualified as TMaybe
+import Data.TypeLevel.List qualified as TList
 import Data.HeteroParList qualified as HeteroParList
 import Data.HeteroParList qualified as HPList
 import Data.HeteroParList (pattern (:**))
@@ -171,7 +172,7 @@ data SubmitInfo2 mn wsas cbas ssas = SubmitInfo2 {
 	submitInfo2SignalSemaphoreInfos ::
 		HPList.PL (U2 Semaphore.SubmitInfo) ssas }
 
-class SubmitInfo2ListToMiddle sias where
+class M.SubmitInfo2ListToCore (SubmitInfo2ArgsListToMiddle sias) => SubmitInfo2ListToMiddle sias where
 	type family SubmitInfo2ArgsListToMiddle sias ::
 		[(Maybe Type, [Maybe Type], [Maybe Type], [Maybe Type])]
 	submitInfo2ListToMiddle ::
@@ -183,6 +184,13 @@ instance SubmitInfo2ListToMiddle '[] where
 	submitInfo2ListToMiddle HPList.Nil = HPList.Nil
 
 instance (
+	WithPoked (TMaybe.M mn),
+	TList.Length (TMapIndex.M0_2 wsas),
+	TList.Length (TMapIndex.M0_2 cbas),
+	TList.Length (TMapIndex.M0_2 ssas),
+	HPList.ToListWithCCpsM' WithPoked TMaybe.M (TMapIndex.M0_2 wsas),
+	HPList.ToListWithCCpsM' WithPoked TMaybe.M (TMapIndex.M0_2 cbas),
+	HPList.ToListWithCCpsM' WithPoked TMaybe.M (TMapIndex.M0_2 ssas),
 	Semaphore.SubmitInfoListToMiddle wsas,
 	CommandBuffer.SubmitInfoListToMiddle cbas,
 	Semaphore.SubmitInfoListToMiddle ssas,

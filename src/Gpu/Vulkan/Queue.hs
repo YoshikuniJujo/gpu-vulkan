@@ -10,7 +10,7 @@ module Gpu.Vulkan.Queue (
 
 	-- * SUBMIT AND WAIT IDLE
 
-	submit, M.waitIdle, M.Q,
+	submit, submit2, M.waitIdle, M.Q,
 
 	-- * TYPE SYNONYM
 
@@ -55,6 +55,11 @@ submit :: SubmitInfoListToMiddle sias => M.Q ->
 	HeteroParList.PL (U4 SubmitInfo) sias -> Maybe (Fence.F sf) -> IO ()
 submit q sis mf =
 	M.submit q (submitInfoListToMiddle sis) $ (\(Fence.F f) -> f) <$> mf
+
+submit2 :: SubmitInfo2ListToMiddle sias => M.Q ->
+	HeteroParList.PL (U4 SubmitInfo2) sias -> Maybe (Fence.F sf) -> IO ()
+submit2 q sis mf =
+	M.submit2 q (submitInfo2ListToMiddle sis) $ (\(Fence.F f) -> f) <$> mf
 
 type Index = Word32
 
