@@ -16,6 +16,10 @@ module Gpu.Vulkan.Semaphore.Internal (
 
 	group, Group, create', unsafeDestroy, lookup,
 
+	-- * SUBMIT INFO
+
+	SubmitInfo(..), submitInfoToMiddle
+
 	) where
 
 import Prelude hiding (lookup)
@@ -35,6 +39,8 @@ import qualified Gpu.Vulkan.AllocationCallbacks.Type as AllocationCallbacks
 import qualified Gpu.Vulkan.Semaphore.Middle as M
 
 import Gpu.Vulkan.Semaphore.Type
+
+import qualified Gpu.Vulkan.Pipeline as Pipeline
 
 create :: (WithPoked (TMaybe.M mn), AllocationCallbacks.ToMiddle mac) =>
 	Device.D sd -> M.CreateInfo mn ->
@@ -95,3 +101,19 @@ unsafeDestroy (Group (Device.D mdvc)
 
 lookup :: Ord k => Group sd ma ss k -> k -> IO (Maybe (S ss))
 lookup (Group _ _ _sem ss) k = atomically $ Map.lookup k <$> readTVar ss
+
+data SubmitInfo mn ss = SubmitInfo {
+	submitInfoNext :: TMaybe.M mn,
+	submitInfoSemaphore :: S ss, submitInfoValue :: Word64,
+	submitInfoStageMask :: Pipeline.StageFlags2,
+	submitInfoDeviceIndex :: Word32 }
+
+submitInfoToMiddle :: SubmitInfo mn ss -> M.SubmitInfo mn
+submitInfoToMiddle SubmitInfo {
+	submitInfoNext = mnxt,
+	submitInfoSemaphore = S s, submitInfoValue = v,
+	submitInfoStageMask = sm, submitInfoDeviceIndex = di
+	} = M.SubmitInfo {
+	M.submitInfoNext = mnxt,
+	M.submitInfoSemaphore = s, M.submitInfoValue = v,
+	M.submitInfoStageMask = sm, M.submitInfoDeviceIndex = di }
