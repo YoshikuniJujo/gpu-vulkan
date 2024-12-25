@@ -31,7 +31,7 @@ module Gpu.Vulkan.Image (
 
 	-- * BLIT
 
-	Blit(..), SubresourceLayers(..),
+	Blit(..), Blit2(..), SubresourceLayers(..),
 
 	-- * OTHERS
 
