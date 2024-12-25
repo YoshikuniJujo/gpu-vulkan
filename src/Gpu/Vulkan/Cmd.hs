@@ -39,7 +39,7 @@ DynamicIndex(..), GetDynamicLength,
 
 -- * COPY BUFFER AND IMAGES
 
-copyBuffer, copyBufferToImage, copyImageToBuffer, blitImage,
+copyBuffer, copyBufferToImage, copyImageToBuffer, blitImage, blitImage2,
 
 -- * CLEAR COLOR IMAGE
 
@@ -341,6 +341,14 @@ blitImage :: CommandBuffer.C scb ->
 blitImage (CommandBuffer.T.C cb)
 	(Image.Binded src) slyt (Image.Binded dst) dlyt blts fltr =
 	M.blitImage cb src slyt dst dlyt blts fltr
+
+blitImage2 :: (
+	WithPoked (TMaybe.M mn),
+	Length ras, HPList.ToListWithCCpsM' WithPoked TMaybe.M ras ) =>
+	CommandBuffer.C scb ->
+	BlitImageInfo2 mn sms sis nms fmts smd sid nmd fmtd ras -> IO ()
+blitImage2 (CommandBuffer.T.C cb) bii =
+	M.blitImage2 cb $ blitImageInfo2ToMiddle bii
 
 resetQueryPool :: CommandBuffer.C sc ->
 	QueryPool.Q sq tp -> Query.First -> Query.Count -> IO ()
