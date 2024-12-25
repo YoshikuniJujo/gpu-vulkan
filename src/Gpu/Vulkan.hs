@@ -87,7 +87,7 @@ module Gpu.Vulkan (
 
 	Size(..),
 
-	DependencyInfo(..),
+	DependencyInfo(..), BlitImageInfo2(..),
 
 	-- * ENUM
 

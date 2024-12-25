@@ -32,7 +32,7 @@ module Gpu.Vulkan.Image.Internal (
 
 	-- * BLIT
 
-	M.Blit(..), M.SubresourceLayers(..),
+	M.Blit(..), M.Blit2(..), M.SubresourceLayers(..),
 
 	-- * OTHERS
 

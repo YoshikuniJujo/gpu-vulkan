@@ -87,7 +87,8 @@ module Gpu.Vulkan.Internal (
 
 	M.Size(..),
 
-	DependencyInfo(..), dependencyInfoToMiddle
+	DependencyInfo(..), dependencyInfoToMiddle,
+	BlitImageInfo2(..), blitImageInfo2ToMiddle
 
 	) where
 
@@ -113,6 +114,7 @@ import qualified Gpu.Vulkan.Pipeline.Enum as Pipeline
 import Gpu.Vulkan.Memory.Middle qualified as Memory.M
 import {-# SOURCE #-} Gpu.Vulkan.Buffer.Internal qualified as Buffer
 import Gpu.Vulkan.Image.Internal qualified as Image
+import Gpu.Vulkan.Image.Enum qualified as Image
 
 import Gpu.Vulkan.CommandBuffer.Internal qualified as CommandBuffer
 
@@ -320,3 +322,28 @@ dependencyInfoToMiddle DependencyInfo {
 		Buffer.memoryBarrier2ListToMiddle bmbs,
 	M.dependencyInfoImageMemoryBarriers =
 		Image.memoryBarrier2ListToMiddle imbs }
+
+data BlitImageInfo2 mn sms sis nms fmts smd sid nmd fmtd ras = BlitImageInfo2 {
+	blitImageInfo2Next :: TMaybe.M mn,
+	blitImageInfo2SrcImage :: Image.Binded sms sis nms fmts,
+	blitImageInfo2SrcImageLayout :: Image.Layout,
+	blitImageInfo2DstImage :: Image.Binded smd sid nmd fmtd,
+	blitImageInfo2DstImageLayout :: Image.Layout,
+	blitImageInfo2Regions :: HPList.PL Image.Blit2 ras,
+	blitImageInfo2Filter :: Filter }
+
+blitImageInfo2ToMiddle ::
+	BlitImageInfo2 mn sms sis nms fmts smd sid nmd fmtd ras ->
+	M.BlitImageInfo2 mn ras
+blitImageInfo2ToMiddle BlitImageInfo2 {
+	blitImageInfo2Next = mnxt,
+	blitImageInfo2SrcImage = Image.Binded si,
+	blitImageInfo2SrcImageLayout = sil,
+	blitImageInfo2DstImage = Image.Binded di,
+	blitImageInfo2DstImageLayout = dil,
+	blitImageInfo2Regions = rs,
+	blitImageInfo2Filter = flt } = M.BlitImageInfo2 {
+	M.blitImageInfo2Next = mnxt,
+	M.blitImageInfo2SrcImage = si, M.blitImageInfo2SrcImageLayout = sil,
+	M.blitImageInfo2DstImage = di, M.blitImageInfo2DstImageLayout = dil,
+	M.blitImageInfo2Regions = rs, M.blitImageInfo2Filter = flt }
