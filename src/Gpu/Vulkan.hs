@@ -89,6 +89,8 @@ module Gpu.Vulkan (
 
 	DependencyInfo(..), BlitImageInfo2(..),
 
+	Sec(..), pattern NanoSec, pattern MicroSec, pattern MilliSec,
+
 	-- * ENUM
 
 	module Gpu.Vulkan.Enum,

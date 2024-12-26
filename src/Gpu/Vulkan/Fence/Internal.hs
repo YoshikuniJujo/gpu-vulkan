@@ -18,7 +18,7 @@ module Gpu.Vulkan.Fence.Internal (
 
 	-- * WAIT FOR FENCES AND RESET FENCES
 
-	waitForFs, resetFs
+	waitForFs, waitForFs', resetFs
 
 	) where
 
@@ -33,8 +33,10 @@ import Data.TypeLevel.Tuple.Uncurry
 import Data.HeteroParList qualified as HeteroParList
 import Data.Map qualified as Map
 import Data.Word
+import Data.Fixed.Generic qualified as FixedG
 import Data.Time
 
+import Gpu.Vulkan
 import Gpu.Vulkan.Fence.Type
 
 import qualified Gpu.Vulkan.Device.Type as Device
@@ -49,8 +51,12 @@ create :: (WithPoked (TMaybe.M mn), AllocationCallbacks.ToMiddle mac) =>
 create (Device.D dvc) ci (AllocationCallbacks.toMiddle -> mac) f =
 	bracket (M.create dvc ci mac) (\fnc -> M.destroy dvc fnc mac) (f . F)
 
-waitForFs :: Device.D sd -> HeteroParList.PL F sfs -> Bool -> Maybe DiffTime -> IO ()
-waitForFs (Device.D dvc) fs wa (maybe maxBound diffTimeToNanoseconds -> to) =
+waitForFs :: Device.D sd -> HeteroParList.PL F sfs -> Bool -> Maybe Sec -> IO ()
+waitForFs (Device.D dvc) fs wa (maybe maxBound (\(Sec (FixedG.MkF ns)) -> ns) -> to) =
+	M.waitForFs dvc (HeteroParList.toList (\(F f) -> f) fs) wa to
+
+waitForFs' :: Device.D sd -> HeteroParList.PL F sfs -> Bool -> Maybe DiffTime -> IO ()
+waitForFs' (Device.D dvc) fs wa (maybe maxBound diffTimeToNanoseconds -> to) =
 	M.waitForFs dvc (HeteroParList.toList (\(F f) -> f) fs) wa to
 
 resetFs :: Device.D sd -> HeteroParList.PL F sfs -> IO ()

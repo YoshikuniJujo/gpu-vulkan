@@ -43,6 +43,7 @@ dependencies:
 - typelevel-tools-yj < 1
 - temporary < 2
 - tools-yj < 1
+- fixed-generic < 1
 
 ghc-options:
 - -Wall

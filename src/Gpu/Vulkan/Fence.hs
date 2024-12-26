@@ -12,7 +12,7 @@ module Gpu.Vulkan.Fence (
 
 	-- * WAIT FOR FENCES AND RESET FENCES
 
-	waitForFs, resetFs,
+	waitForFs, waitForFs', resetFs,
 
 	-- * ENUM
 

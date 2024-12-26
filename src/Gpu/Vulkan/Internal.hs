@@ -88,7 +88,9 @@ module Gpu.Vulkan.Internal (
 	M.Size(..),
 
 	DependencyInfo(..), dependencyInfoToMiddle,
-	BlitImageInfo2(..), blitImageInfo2ToMiddle
+	BlitImageInfo2(..), blitImageInfo2ToMiddle,
+
+	Sec(..), pattern NanoSec, pattern MicroSec, pattern MilliSec
 
 	) where
 
@@ -101,6 +103,9 @@ import Data.TypeLevel.List qualified as TList
 import Data.HeteroParList qualified as HeteroParList
 import Data.HeteroParList qualified as HPList
 import Data.HeteroParList (pattern (:**))
+import Data.Word
+import Data.Fixed
+import Data.Fixed.Generic qualified as FixedG
 import Data.Text qualified as T
 
 import qualified Gpu.Vulkan.Middle as M
@@ -347,3 +352,16 @@ blitImageInfo2ToMiddle BlitImageInfo2 {
 	M.blitImageInfo2SrcImage = si, M.blitImageInfo2SrcImageLayout = sil,
 	M.blitImageInfo2DstImage = di, M.blitImageInfo2DstImageLayout = dil,
 	M.blitImageInfo2Regions = rs, M.blitImageInfo2Filter = flt }
+
+newtype Sec = Sec (FixedG.F E9 Word64)
+
+pattern NanoSec :: Word64 -> Sec
+pattern NanoSec ns = Sec (FixedG.MkF ns)
+
+pattern MicroSec :: FixedG.F E3 Word64 -> Sec
+pattern MicroSec ms <- Sec (FixedG.changeUnit -> ms) where
+	MicroSec ms = Sec $ FixedG.changeUnit ms
+
+pattern MilliSec :: FixedG.F E6 Word64 -> Sec
+pattern MilliSec ms <- Sec (FixedG.changeUnit -> ms) where
+	MilliSec ms = Sec $ FixedG.changeUnit ms
