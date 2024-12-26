@@ -91,6 +91,8 @@ module Gpu.Vulkan (
 
 	Sec(..), pattern NanoSec, pattern MicroSec, pattern MilliSec,
 
+	remainingMipLevels, remainingArrayLayers,
+
 	-- * ENUM
 
 	module Gpu.Vulkan.Enum,

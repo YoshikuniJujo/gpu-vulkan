@@ -90,7 +90,9 @@ module Gpu.Vulkan.Internal (
 	DependencyInfo(..), dependencyInfoToMiddle,
 	BlitImageInfo2(..), blitImageInfo2ToMiddle,
 
-	Sec(..), pattern NanoSec, pattern MicroSec, pattern MilliSec
+	Sec(..), pattern NanoSec, pattern MicroSec, pattern MilliSec,
+
+	M.remainingMipLevels, M.remainingArrayLayers
 
 	) where
 
