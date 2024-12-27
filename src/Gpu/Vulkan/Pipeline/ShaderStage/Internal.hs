@@ -53,7 +53,7 @@ data CreateInfo mn mnsm sknd mac vs = CreateInfo {
 	createInfoModule :: (
 		ShaderModule.CreateInfo mnsm sknd, TPMaybe.M (U2 AllocationCallbacks.A) mac ),
 	createInfoName :: BS.ByteString,
-	createInfoSpecializationInfo :: Maybe (HeteroParList.L vs) }
+	createInfoSpecializationInfo :: HeteroParList.L vs }
 
 allocationCallbacksFromCreateInfo ::
 	CreateInfo mn mnsm sknd mac vs ->
