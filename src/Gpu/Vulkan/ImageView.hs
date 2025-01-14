@@ -11,7 +11,7 @@ module Gpu.Vulkan.ImageView (
 
 	-- * CREATE
 
-	create, unsafeRecreate, unsafeRecreate', I, CreateInfo(..),
+	create, null, unsafeRecreate, unsafeRecreate', I, CreateInfo(..),
 
 	-- ** Manage Multiple Image View
 
@@ -23,7 +23,7 @@ module Gpu.Vulkan.ImageView (
 
 	) where
 
-import Prelude hiding (lookup)
+import Prelude hiding (null, lookup)
 import GHC.TypeLits
 import Foreign.Storable.PeekPoke
 import Control.Exception
@@ -78,6 +78,9 @@ create :: (
 create (Device.D d) ci (AllocationCallbacks.toMiddle -> mac) f = bracket
 	(M.create d (createInfoToMiddle ci) mac)
 	(\i -> M.destroy d i mac) (f . I)
+
+null :: IO (I nm ivfmt s)
+null = I <$> M.null
 
 group ::
 	AllocationCallbacks.ToMiddle ma =>
