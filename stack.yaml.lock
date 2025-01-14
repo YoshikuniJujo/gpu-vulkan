@@ -5,16 +5,12 @@
 
 packages:
 - completed:
-    commit: 4e96f609413fcd5bab893fafcc8f723fda97da3c
-    git: https://github.com/YoshikuniJujo/gpu-vulkan-middle.git
-    name: gpu-vulkan-middle
+    hackage: gpu-vulkan-middle-0.1.0.73@sha256:5f0afa0dc5e50575ce1cf452d9f56874579a2890a01565118833fd2264e971a7,9029
     pantry-tree:
-      sha256: 27b603fa5e11df3cb10a2e1234a04755b48b68d21c135135b35ddee758188676
-      size: 15963
-    version: 0.1.0.72
+      sha256: 1677759280f3ec62082aa4e2c9733879aab263ab796510c116a6d101c57649ff
+      size: 13400
   original:
-    commit: 4e96f609413fcd5bab893fafcc8f723fda97da3c
-    git: https://github.com/YoshikuniJujo/gpu-vulkan-middle.git
+    hackage: gpu-vulkan-middle-0.1.0.73
 - completed:
     hackage: gpu-vulkan-core-0.1.0.20@sha256:c23c2d9d2834c078f6dd1bed9d895bcd0f6655c98e6f70f5c3606dacc4571ec1,3475
     pantry-tree:
