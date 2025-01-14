@@ -18,7 +18,7 @@
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
 
-resolver: nightly-2024-12-27
+resolver: nightly-2025-01-14
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -42,14 +42,14 @@ packages:
 #
 
 extra-deps:
-  - git: https://github.com/YoshikuniJujo/gpu-vulkan-middle.git
-    commit: e03047b727f5e802cf4bd090fe8658a7f127b401
-  - git: https://github.com/YoshikuniJujo/gpu-vulkan-core.git
-    commit: 3f61d72650740e36644ce87d4f6546390b324b46
-  # - gpu-vulkan-middle-0.1.0.68
-  # - gpu-vulkan-core-0.1.0.19
-  - language-spir-v-0.1.0.1
-  - exception-hierarchy-0.1.0.12
+  # - git: https://github.com/YoshikuniJujo/gpu-vulkan-middle.git
+  # commit: e03047b727f5e802cf4bd090fe8658a7f127b401
+  # - git: https://github.com/YoshikuniJujo/gpu-vulkan-core.git
+  # commit: 3f61d72650740e36644ce87d4f6546390b324b46
+  - gpu-vulkan-middle-0.1.0.72
+  - gpu-vulkan-core-0.1.0.20
+  - language-spir-v-0.1.0.3
+  # - exception-hierarchy-0.1.0.12
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
