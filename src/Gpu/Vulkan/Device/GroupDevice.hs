@@ -1,3 +1,12 @@
-module Gpu.Vulkan.Device.GroupDevice (CreateInfo(..)) where
+{-# LANGUAGE PatternSynonyms #-}
+{-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
-import Gpu.Vulkan.Device.GroupDevice.Middle
+module Gpu.Vulkan.Device.GroupDevice (
+
+	CreateInfo(..),
+
+	Mask, pattern AllDevice, Index, mkMask
+
+) where
+
+import Gpu.Vulkan.Device.GroupDevice.Internal

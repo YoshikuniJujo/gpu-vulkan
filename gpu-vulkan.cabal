@@ -130,6 +130,7 @@ library
       Gpu.Vulkan.DescriptorSetLayout.Type
       Gpu.Vulkan.DescriptorSetLayout.UpdateDynamicLengths
       Gpu.Vulkan.Device.Enum
+      Gpu.Vulkan.Device.GroupDevice.Internal
       Gpu.Vulkan.Device.Type
       Gpu.Vulkan.Enum
       Gpu.Vulkan.Exception.Enum

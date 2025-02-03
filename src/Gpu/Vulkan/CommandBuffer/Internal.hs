@@ -48,6 +48,7 @@ import Gpu.Vulkan.CommandBuffer.Type
 import Gpu.Vulkan.CommandBuffer.Enum
 
 import qualified Gpu.Vulkan.Device.Type as Device
+import Gpu.Vulkan.Device.GroupDevice.Internal qualified as GDevice
 import qualified Gpu.Vulkan.CommandPool.Type as CommandPool
 import qualified Gpu.Vulkan.CommandBuffer.Middle as M
 
@@ -115,7 +116,7 @@ reset (C cb) rfs = M.reset cb rfs
 data SubmitInfo mn sc = SubmitInfo {
 	submitInfoNext :: TMaybe.M mn,
 	submitInfoCommandBuffer :: C sc,
-	submitInfoDeviceMask :: Word32 }
+	submitInfoDeviceMask :: GDevice.Mask }
 
 class SubmitInfoListToMiddle mnscs where
 	submitInfoListToMiddle ::
@@ -134,6 +135,6 @@ submitInfoToMiddle :: SubmitInfo mn sc -> M.SubmitInfo mn
 submitInfoToMiddle SubmitInfo {
 	submitInfoNext = mnxt,
 	submitInfoCommandBuffer = C c,
-	submitInfoDeviceMask = dm } = M.SubmitInfo {
+	submitInfoDeviceMask = GDevice.Mask dm } = M.SubmitInfo {
 	M.submitInfoNext = mnxt,
 	M.submitInfoCommandBuffer = c, M.submitInfoDeviceMask = dm }
