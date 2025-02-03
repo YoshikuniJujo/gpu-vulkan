@@ -1,5 +1,5 @@
 name:                gpu-vulkan
-version:             0.1.0.167
+version:             0.1.0.168
 github:              "YoshikuniJujo/gpu-vulkan"
 license:             BSD3
 author:              "Yoshikuni Jujo"
@@ -83,6 +83,7 @@ library:
   - Gpu.Vulkan.DescriptorSetLayout.BindingFlags
   - Gpu.Vulkan.Device
   - Gpu.Vulkan.Device.Internal
+  - Gpu.Vulkan.Device.GroupDevice
   - Gpu.Vulkan.Exception
   - Gpu.Vulkan.Fence
   - Gpu.Vulkan.Fence.Internal
