@@ -40,6 +40,7 @@ import Data.Map qualified as Map
 import Data.Word
 
 import qualified Gpu.Vulkan.Device.Type as Device
+import Gpu.Vulkan.Device.GroupDevice qualified as GDevice
 import qualified Gpu.Vulkan.AllocationCallbacks as AllocationCallbacks
 import qualified Gpu.Vulkan.AllocationCallbacks.Type as AllocationCallbacks
 import qualified Gpu.Vulkan.Semaphore.Middle as M
@@ -112,7 +113,7 @@ data SubmitInfo mn ss = SubmitInfo {
 	submitInfoNext :: TMaybe.M mn,
 	submitInfoSemaphore :: S ss, submitInfoValue :: Word64,
 	submitInfoStageMask :: Pipeline.StageFlags2,
-	submitInfoDeviceIndex :: Word32 }
+	submitInfoDeviceIndex :: GDevice.Index }
 
 class SubmitInfoListToMiddle mnsss where
 	submitInfoListToMiddle ::
