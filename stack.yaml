@@ -49,7 +49,6 @@ extra-deps:
   # - gpu-vulkan-middle-0.1.0.73
   # - gpu-vulkan-core-0.1.0.20
   - language-spir-v-0.1.0.3
-  # - exception-hierarchy-0.1.0.12
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
