@@ -4,7 +4,7 @@
 {-# LANGUAGE MonoLocalBinds #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleContexts, UndecidableInstances #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
@@ -32,6 +32,7 @@ import Control.Concurrent.STM.TSem
 import Control.Exception
 import Data.TypeLevel.Tuple.MapIndex qualified as TMapIndex
 import Data.TypeLevel.Maybe qualified as TMaybe
+import Data.TypeLevel.List qualified as TList
 import Data.TypeLevel.ParMaybe qualified as TPMaybe
 import Data.TypeLevel.Tuple.Uncurry
 import Data.HeteroParList (pattern (:**))
@@ -115,7 +116,9 @@ data SubmitInfo mn ss = SubmitInfo {
 	submitInfoStageMask :: Pipeline.StageFlags2,
 	submitInfoDeviceIndex :: GDevice.Index }
 
-class SubmitInfoListToMiddle mnsss where
+class (	TList.Length (TMapIndex.M0_2 mnsss),
+	HPList.ToListWithCCpsM' WithPoked TMaybe.M (TMapIndex.M0_2 mnsss) ) =>
+	SubmitInfoListToMiddle mnsss where
 	submitInfoListToMiddle ::
 		HPList.PL (U2 SubmitInfo) mnsss ->
 		HPList.PL M.SubmitInfo (TMapIndex.M0_2 mnsss)
@@ -123,7 +126,10 @@ class SubmitInfoListToMiddle mnsss where
 instance SubmitInfoListToMiddle '[] where
 	submitInfoListToMiddle HPList.Nil = HPList.Nil
 
-instance SubmitInfoListToMiddle mnsss =>
+instance (
+	TList.Length (TMapIndex.M0_2 (mnss : mnsss)),
+	HPList.ToListWithCCpsM' WithPoked TMaybe.M (TMapIndex.M0_2 (mnss : mnsss)),
+	SubmitInfoListToMiddle mnsss ) =>
 	SubmitInfoListToMiddle (mnss ': mnsss) where
 	submitInfoListToMiddle (U2 si :** sis) =
 		submitInfoToMiddle si :** submitInfoListToMiddle sis

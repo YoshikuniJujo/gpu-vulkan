@@ -195,12 +195,8 @@ instance SubmitInfo2ListToMiddle '[] where
 
 instance (
 	WithPoked (TMaybe.M mn),
-	TList.Length (TMapIndex.M0_2 wsas),
 	TList.Length (TMapIndex.M0_2 cbas),
-	TList.Length (TMapIndex.M0_2 ssas),
-	HPList.ToListWithCCpsM' WithPoked TMaybe.M (TMapIndex.M0_2 wsas),
 	HPList.ToListWithCCpsM' WithPoked TMaybe.M (TMapIndex.M0_2 cbas),
-	HPList.ToListWithCCpsM' WithPoked TMaybe.M (TMapIndex.M0_2 ssas),
 	Semaphore.SubmitInfoListToMiddle wsas,
 	CommandBuffer.SubmitInfoListToMiddle cbas,
 	Semaphore.SubmitInfoListToMiddle ssas,
