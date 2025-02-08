@@ -38,6 +38,7 @@ import Control.Exception
 import Data.TypeLevel.Tuple.Uncurry
 import Data.TypeLevel.Tuple.MapIndex qualified as TMapIndex
 import Data.TypeLevel.Maybe qualified as TMaybe
+import Data.TypeLevel.List qualified as TList
 import Data.TypeLevel.List qualified as TLength
 import Data.HeteroParList (pattern (:**))
 import Data.HeteroParList qualified as HPList
@@ -118,7 +119,10 @@ data SubmitInfo mn sc = SubmitInfo {
 	submitInfoCommandBuffer :: C sc,
 	submitInfoDeviceMask :: GDevice.Mask }
 
-class SubmitInfoListToMiddle mnscs where
+class (	TList.Length (TMapIndex.M0_2 mnscs),
+	HPList.ToListWithCCpsM' WithPoked TMaybe.M (TMapIndex.M0_2 mnscs)
+	) =>
+	SubmitInfoListToMiddle mnscs where
 	submitInfoListToMiddle ::
 		HPList.PL (U2 SubmitInfo) mnscs ->
 		HPList.PL M.SubmitInfo (TMapIndex.M0_2 mnscs)
@@ -126,7 +130,11 @@ class SubmitInfoListToMiddle mnscs where
 instance SubmitInfoListToMiddle '[] where
 	submitInfoListToMiddle HPList.Nil = HPList.Nil
 
-instance SubmitInfoListToMiddle mnscs =>
+instance (
+	TList.Length (TMapIndex.M0_2 (mnsc : mnscs)),
+	HPList.ToListWithCCpsM'
+		WithPoked TMaybe.M (TMapIndex.M0_2 (mnsc : mnscs)),
+	SubmitInfoListToMiddle mnscs ) =>
 	SubmitInfoListToMiddle (mnsc ': mnscs) where
 	submitInfoListToMiddle (U2 si :** sis) =
 		submitInfoToMiddle si :** submitInfoListToMiddle sis

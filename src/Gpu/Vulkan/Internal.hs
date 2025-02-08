@@ -101,7 +101,6 @@ import Data.Kind
 import Data.TypeLevel.Tuple.Uncurry
 import Data.TypeLevel.Tuple.MapIndex qualified as TMapIndex
 import Data.TypeLevel.Maybe qualified as TMaybe
-import Data.TypeLevel.List qualified as TList
 import Data.HeteroParList qualified as HeteroParList
 import Data.HeteroParList qualified as HPList
 import Data.HeteroParList (pattern (:**))
@@ -195,8 +194,6 @@ instance SubmitInfo2ListToMiddle '[] where
 
 instance (
 	WithPoked (TMaybe.M mn),
-	TList.Length (TMapIndex.M0_2 cbas),
-	HPList.ToListWithCCpsM' WithPoked TMaybe.M (TMapIndex.M0_2 cbas),
 	Semaphore.SubmitInfoListToMiddle wsas,
 	CommandBuffer.SubmitInfoListToMiddle cbas,
 	Semaphore.SubmitInfoListToMiddle ssas,
