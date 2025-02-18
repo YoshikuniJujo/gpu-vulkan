@@ -10,7 +10,7 @@ module Gpu.Vulkan.PhysicalDevice (
 
 	-- * PHYSICAL DEVICE PROPERTIES AND FEATURES
 
-	M.getProperties, M.Properties(..), M.getFeatures,
+	M.getProperties, M.Properties(..), M.SparseProperties(..), M.getFeatures,
 
 	-- ** Get Properties 2
 
