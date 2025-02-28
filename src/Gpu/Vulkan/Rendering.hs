@@ -1,7 +1,8 @@
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
 module Gpu.Vulkan.Rendering (
-	Info(..), AttachmentInfo(..),
+	Info(..),
+	AttachmentInfo(..), attachmentInfoZero,
 	AttachmentInfoMaybeToMiddle, AttachmentInfoListToMiddle, MaybeI0'7_8
 	) where
 

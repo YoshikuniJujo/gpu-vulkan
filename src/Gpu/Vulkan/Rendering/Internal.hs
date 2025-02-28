@@ -16,6 +16,7 @@ import Data.TypeLevel.Tuple.Index
 import Data.TypeLevel.Tuple.MapIndex
 import Data.TypeLevel.Maybe qualified as TMaybe
 import Data.TypeLevel.ParMaybe qualified as TPMaybe
+import Data.Default
 import Data.HeteroParList (pattern (:**))
 import Data.HeteroParList qualified as HPList
 import Data.Word
@@ -69,6 +70,21 @@ data AttachmentInfo mn vnm vfmt sv rvnm rvfmt srv ct = AttachmentInfo {
 	attachmentInfoLoadOp :: Att.LoadOp,
 	attachmentInfoStoreOp :: Att.StoreOp,
 	attachmentInfoClearValue :: Vk.ClearValue ct }
+
+attachmentInfoZero :: Default (Vk.ClearValue ct) =>
+	TMaybe.M mn -> IO (AttachmentInfo mn vnm vfmt sv rvnm rvfmt srv ct)
+attachmentInfoZero mnxt = do
+	(niv, nriv) <- (,) <$> ImgVw.null <*> ImgVw.null
+	pure AttachmentInfo {
+		attachmentInfoNext = mnxt,
+		attachmentInfoImageView = niv,
+		attachmentInfoImageLayout = Img.Layout 0,
+		attachmentInfoResolveMode = Vk.ResolveModeFlagBits 0,
+		attachmentInfoResolveImageView = nriv,
+		attachmentInfoResolveImageLayout = Img.Layout 0,
+		attachmentInfoLoadOp = Att.LoadOp 0,
+		attachmentInfoStoreOp = Att.StoreOp 0,
+		attachmentInfoClearValue = def }
 
 deriving instance Show (TMaybe.M mn) =>
 	Show (AttachmentInfo mn vnm vfmt sv rvnm rvfmt srv ct)
