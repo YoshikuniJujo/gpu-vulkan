@@ -10,7 +10,7 @@ module Gpu.Vulkan.RenderPass.Internal (
 
 	-- * CREATE
 
-	create, R, CreateInfo(..),
+	create, null, R, CreateInfo(..),
 
 	-- ** Group
 
@@ -22,7 +22,7 @@ module Gpu.Vulkan.RenderPass.Internal (
 
 	) where
 
-import Prelude hiding (lookup)
+import Prelude hiding (null, lookup)
 
 import Foreign.Storable.PeekPoke
 import Control.Concurrent.STM
@@ -59,6 +59,9 @@ create :: (
 create (Device.D dvc) ci (AllocationCallbacks.toMiddle -> mac) f = bracket
 	(M.create dvc (createInfoToMiddle ci) mac)
 	(\r -> M.destroy dvc r mac) (f . R)
+
+null :: R s
+null = R M.null
 
 data CreateInfo mn fmts = CreateInfo {
 	createInfoNext :: TMaybe.M mn,

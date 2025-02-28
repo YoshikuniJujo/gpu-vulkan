@@ -4,7 +4,7 @@ module Gpu.Vulkan.RenderPass (
 
 	-- * CREATE
 
-	create, R, CreateInfo(..),
+	create, null, R, CreateInfo(..),
 
 	-- ** Group
 
@@ -20,6 +20,6 @@ module Gpu.Vulkan.RenderPass (
 
 	) where
 
-import Prelude hiding (lookup)
+import Prelude hiding (null, lookup)
 import Gpu.Vulkan.RenderPass.Internal
 import Gpu.Vulkan.RenderPass.Enum

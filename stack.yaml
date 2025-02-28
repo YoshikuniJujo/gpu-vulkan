@@ -43,7 +43,7 @@ packages:
 
 extra-deps:
   - git: https://github.com/YoshikuniJujo/gpu-vulkan-middle.git
-    commit: b1e298546d0e9f5b3394803747268a463d9ee800
+    commit: 873a9210de1fbddd3757703ef4b6659234208631
   - git: https://github.com/YoshikuniJujo/gpu-vulkan-core.git
     commit: b83a9103056ff9ade87a09337273b56570bc63a7
   #  - gpu-vulkan-middle-0.1.0.75
