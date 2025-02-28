@@ -91,6 +91,7 @@ library
       Gpu.Vulkan.Queue
       Gpu.Vulkan.QueueFamily
       Gpu.Vulkan.RenderPass
+      Gpu.Vulkan.Rendering
       Gpu.Vulkan.Sample
       Gpu.Vulkan.Sampler
       Gpu.Vulkan.Semaphore
@@ -170,6 +171,7 @@ library
       Gpu.Vulkan.Query.Enum
       Gpu.Vulkan.QueryPool.Type
       Gpu.Vulkan.Queue.Enum
+      Gpu.Vulkan.Rendering.Internal
       Gpu.Vulkan.RenderPass.Enum
       Gpu.Vulkan.RenderPass.Internal
       Gpu.Vulkan.RenderPass.Type

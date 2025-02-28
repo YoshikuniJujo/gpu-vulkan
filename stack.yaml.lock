@@ -5,19 +5,27 @@
 
 packages:
 - completed:
-    hackage: gpu-vulkan-middle-0.1.0.75@sha256:eea5220f6696b9d35a74a0959cd7987d6879dc558a7697af888236f979df2231,9124
+    commit: fd9baeecb79f4b80e564fbabb2dfdbcfe33a028d
+    git: https://github.com/YoshikuniJujo/gpu-vulkan-middle.git
+    name: gpu-vulkan-middle
     pantry-tree:
-      sha256: 5b163da48b756a822a132b550a204f8a37f65b96b003e98c2e3a1017e523f50d
-      size: 13576
+      sha256: c6844e1705c8f5400de517e3cd2a35e4b1b1ce770db0871d75be5a7119595787
+      size: 16297
+    version: 0.1.0.75
   original:
-    hackage: gpu-vulkan-middle-0.1.0.75
+    commit: fd9baeecb79f4b80e564fbabb2dfdbcfe33a028d
+    git: https://github.com/YoshikuniJujo/gpu-vulkan-middle.git
 - completed:
-    hackage: gpu-vulkan-core-0.1.0.21@sha256:347fcc9b982033e2162d1106e891f6d57ee251a79bdd8f9398f5ca918f3c9e91,3516
+    commit: b83a9103056ff9ade87a09337273b56570bc63a7
+    git: https://github.com/YoshikuniJujo/gpu-vulkan-core.git
+    name: gpu-vulkan-core
     pantry-tree:
-      sha256: 65e73d0f6ffe0bfbd8545b31671d21ef2fa69553644474d181917fef1a4a0625
-      size: 5235
+      sha256: c07b7987fcc4585ef9aa2aca6e238f2f8ee19bc95bd5b8cbf6fae34a868d9db9
+      size: 5711
+    version: 0.1.0.22
   original:
-    hackage: gpu-vulkan-core-0.1.0.21
+    commit: b83a9103056ff9ade87a09337273b56570bc63a7
+    git: https://github.com/YoshikuniJujo/gpu-vulkan-core.git
 - completed:
     hackage: language-spir-v-0.1.0.3@sha256:c07d92777e2b0e4ac9bd3ef0902e50c046d42edf1a1a98d17e78d039d60d1351,2079
     pantry-tree:
@@ -25,6 +33,13 @@ packages:
       size: 650
   original:
     hackage: language-spir-v-0.1.0.3
+- completed:
+    hackage: hetero-parameter-list-0.1.0.20@sha256:61ad64240999e4027fce99817fa939a0d2bfd0bbd81f9f444b4a8f774c51cd3e,1876
+    pantry-tree:
+      sha256: 2c2b3ffe107f59c42ef4ba6f535ddf74d035516017ff30564293a835b74c754e
+      size: 459
+  original:
+    hackage: hetero-parameter-list-0.1.0.20
 snapshots:
 - completed:
     sha256: 18783f9dec03aae936ea81a303c1276b273b57e3491059eae261164b9df9cb0f

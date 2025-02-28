@@ -120,6 +120,7 @@ library:
   - Gpu.Vulkan.Queue
   - Gpu.Vulkan.QueueFamily
   - Gpu.Vulkan.RenderPass
+  - Gpu.Vulkan.Rendering
   - Gpu.Vulkan.Sample
   - Gpu.Vulkan.Sampler
   - Gpu.Vulkan.Semaphore
