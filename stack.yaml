@@ -43,13 +43,14 @@ packages:
 
 extra-deps:
   - git: https://github.com/YoshikuniJujo/gpu-vulkan-middle.git
-    commit: fd9baeecb79f4b80e564fbabb2dfdbcfe33a028d
+    commit: b1e298546d0e9f5b3394803747268a463d9ee800
   - git: https://github.com/YoshikuniJujo/gpu-vulkan-core.git
     commit: b83a9103056ff9ade87a09337273b56570bc63a7
   #  - gpu-vulkan-middle-0.1.0.75
   #  - gpu-vulkan-core-0.1.0.21
   - language-spir-v-0.1.0.3
-  - hetero-parameter-list-0.1.0.20
+  - hetero-parameter-list-0.1.0.21
+  - typelevel-tools-yj-0.1.0.8
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

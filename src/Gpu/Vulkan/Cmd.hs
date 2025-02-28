@@ -16,6 +16,10 @@ module Gpu.Vulkan.Cmd (
 
 beginRenderPass,
 
+-- * BEGIN RENDERING
+
+beginRendering,
+
 -- * DRAW AND DISPATCH
 
 -- ** Draw
@@ -98,6 +102,7 @@ import qualified Gpu.Vulkan.Image.Type as Image
 import qualified Gpu.Vulkan.Image.Middle as Image.M
 
 import qualified Gpu.Vulkan.RenderPass.Internal as RenderPass
+import qualified Gpu.Vulkan.Rendering.Internal as Rendering
 import qualified Gpu.Vulkan.Subpass.Enum as Subpass
 import qualified Gpu.Vulkan.Cmd.Middle as M
 
@@ -112,12 +117,29 @@ import Gpu.Vulkan.QueryPool.Type qualified as QueryPool
 import Gpu.Vulkan.Query qualified as Query
 import Gpu.Vulkan.Object.Base qualified as KObj
 
+import Gpu.Vulkan.Rendering.Middle qualified as Rendering.M
+
 beginRenderPass :: (WithPoked (TMaybe.M mn), ClearValueListToCore cts) =>
 	CommandBuffer.C scb -> RenderPass.BeginInfo mn sr sf cts ->
 	Subpass.Contents -> IO a -> IO a
 beginRenderPass (CommandBuffer.T.C cb) bi cnt f = bracket_
 	(M.beginRenderPass cb (RenderPass.beginInfoToMiddle bi) cnt)
 	(M.endRenderPass cb) f
+
+beginRendering :: (
+	WithPoked (TMaybe.M mn),
+	Rendering.AttachmentInfoListToMiddle cas,
+	Rendering.AttachmentInfoMaybeToMiddle das,
+	Rendering.AttachmentInfoMaybeToMiddle sas,
+	Length (TMapIndex.M0'7_8 cas),
+	HeteroParList.ToListWithCCpsM''
+		Rendering.M.AttachmentInfoToCore (TMapIndex.M0'7_8 cas),
+	Rendering.M.AttachmentInfoToCoreMaybe (Rendering.MaybeI0'7_8 das),
+	Rendering.M.AttachmentInfoToCoreMaybe (Rendering.MaybeI0'7_8 sas) ) =>
+	CommandBuffer.C scb -> Rendering.Info mn cas das sas -> IO a -> IO a
+beginRendering (CommandBuffer.T.C cb) ri f = bracket_
+	(M.beginRendering cb (Rendering.infoToMiddle ri))
+	(M.endRendering cb) f
 
 bindPipelineGraphics :: CommandBuffer.C scb ->
 	Pipeline.BindPoint -> Pipeline.G sg vibs vias slbtss ->
