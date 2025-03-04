@@ -49,6 +49,7 @@ library
       Gpu.Vulkan.Component
       Gpu.Vulkan.Descriptor
       Gpu.Vulkan.DescriptorPool
+      Gpu.Vulkan.DescriptorPool.Type
       Gpu.Vulkan.DescriptorSet
       Gpu.Vulkan.DescriptorSetLayout
       Gpu.Vulkan.DescriptorSetLayout.BindingFlags
@@ -120,7 +121,6 @@ library
       Gpu.Vulkan.Descriptor.Enum
       Gpu.Vulkan.Descriptor.Internal
       Gpu.Vulkan.DescriptorPool.Enum
-      Gpu.Vulkan.DescriptorPool.Type
       Gpu.Vulkan.DescriptorSet.BindingAndArrayElem
       Gpu.Vulkan.DescriptorSet.BindingAndArrayElem.Buffer
       Gpu.Vulkan.DescriptorSet.Copy

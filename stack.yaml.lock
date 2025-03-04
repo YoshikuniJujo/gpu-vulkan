@@ -49,7 +49,7 @@ packages:
     hackage: typelevel-tools-yj-0.1.0.8
 snapshots:
 - completed:
-    sha256: 18783f9dec03aae936ea81a303c1276b273b57e3491059eae261164b9df9cb0f
-    size: 654473
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2025/2/17.yaml
-  original: nightly-2025-02-17
+    sha256: 890db3d37955b5d7f66cb478d78641bf80698235684c35fcf79353954b3831ac
+    size: 656184
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2025/3/1.yaml
+  original: nightly-2025-03-01
