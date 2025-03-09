@@ -17,7 +17,9 @@ newtype C s = C { unC :: M.C } deriving Show
 newtype GBinded s (vibs :: [(Type, VertexInput.Rate)])
 	(largs :: (Type, [(Type, [DscStLyt.BindingType])], [Type])) =
 	GBinded { unGBinded :: M.C }
+	deriving Show
 
 newtype CBinded s
 	(largs :: (Type, [(Type, [DscStLyt.BindingType])], [Type])) =
 	CBinded { unCBinded :: M.C }
+	deriving Show
