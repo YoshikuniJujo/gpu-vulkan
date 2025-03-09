@@ -46,6 +46,7 @@ library
       Gpu.Vulkan.ColorComponent
       Gpu.Vulkan.CommandBuffer
       Gpu.Vulkan.CommandPool
+      Gpu.Vulkan.CommandPool.Type
       Gpu.Vulkan.Component
       Gpu.Vulkan.Descriptor
       Gpu.Vulkan.DescriptorPool
@@ -116,7 +117,6 @@ library
       Gpu.Vulkan.CommandBuffer.Internal
       Gpu.Vulkan.CommandBuffer.Type
       Gpu.Vulkan.CommandPool.Enum
-      Gpu.Vulkan.CommandPool.Type
       Gpu.Vulkan.Component.Enum
       Gpu.Vulkan.Descriptor.Enum
       Gpu.Vulkan.Descriptor.Internal
