@@ -65,6 +65,7 @@ library
       Gpu.Vulkan.Image
       Gpu.Vulkan.Image.Internal
       Gpu.Vulkan.ImageView
+      Gpu.Vulkan.ImageView.Type
       Gpu.Vulkan.Instance
       Gpu.Vulkan.Instance.Internal
       Gpu.Vulkan.Memory
@@ -142,7 +143,6 @@ library
       Gpu.Vulkan.Image.Enum
       Gpu.Vulkan.Image.Type
       Gpu.Vulkan.ImageView.Enum
-      Gpu.Vulkan.ImageView.Type
       Gpu.Vulkan.Instance.Type
       Gpu.Vulkan.Internal
       Gpu.Vulkan.Memory.Bind

@@ -94,6 +94,7 @@ library:
   - Gpu.Vulkan.Image
   - Gpu.Vulkan.Image.Internal
   - Gpu.Vulkan.ImageView
+  - Gpu.Vulkan.ImageView.Type
   - Gpu.Vulkan.Instance
   - Gpu.Vulkan.Instance.Internal
   - Gpu.Vulkan.Memory
