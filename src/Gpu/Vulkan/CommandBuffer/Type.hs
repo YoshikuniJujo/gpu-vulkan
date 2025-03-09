@@ -12,7 +12,7 @@ import Gpu.Vulkan.CommandBuffer.Middle qualified as M
 
 import Gpu.Vulkan.VertexInput qualified as VertexInput
 
-newtype C s = C { unC :: M.C }
+newtype C s = C { unC :: M.C } deriving Show
 
 newtype GBinded s (vibs :: [(Type, VertexInput.Rate)])
 	(largs :: (Type, [(Type, [DscStLyt.BindingType])], [Type])) =
