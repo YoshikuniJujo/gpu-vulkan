@@ -62,6 +62,7 @@ library
       Gpu.Vulkan.Fence
       Gpu.Vulkan.Fence.Internal
       Gpu.Vulkan.Framebuffer
+      Gpu.Vulkan.Framebuffer.Type
       Gpu.Vulkan.Image
       Gpu.Vulkan.Image.Internal
       Gpu.Vulkan.ImageView
@@ -139,7 +140,6 @@ library
       Gpu.Vulkan.Fence.Enum
       Gpu.Vulkan.Fence.Type
       Gpu.Vulkan.Framebuffer.Enum
-      Gpu.Vulkan.Framebuffer.Type
       Gpu.Vulkan.Image.Enum
       Gpu.Vulkan.Image.Type
       Gpu.Vulkan.ImageView.Enum
