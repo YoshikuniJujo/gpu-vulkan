@@ -74,6 +74,7 @@ library:
   - Gpu.Vulkan.Cmd
   - Gpu.Vulkan.ColorComponent
   - Gpu.Vulkan.CommandBuffer
+  - Gpu.Vulkan.CommandBuffer.Type
   - Gpu.Vulkan.CommandPool
   - Gpu.Vulkan.CommandPool.Type
   - Gpu.Vulkan.Component
