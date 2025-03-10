@@ -96,6 +96,7 @@ library
       Gpu.Vulkan.Queue
       Gpu.Vulkan.QueueFamily
       Gpu.Vulkan.RenderPass
+      Gpu.Vulkan.RenderPass.Type
       Gpu.Vulkan.Rendering
       Gpu.Vulkan.Sample
       Gpu.Vulkan.Sampler
@@ -174,7 +175,6 @@ library
       Gpu.Vulkan.Rendering.Internal
       Gpu.Vulkan.RenderPass.Enum
       Gpu.Vulkan.RenderPass.Internal
-      Gpu.Vulkan.RenderPass.Type
       Gpu.Vulkan.Sample.Enum
       Gpu.Vulkan.Sampler.Enum
       Gpu.Vulkan.Sampler.Type

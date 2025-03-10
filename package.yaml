@@ -125,6 +125,7 @@ library:
   - Gpu.Vulkan.Queue
   - Gpu.Vulkan.QueueFamily
   - Gpu.Vulkan.RenderPass
+  - Gpu.Vulkan.RenderPass.Type
   - Gpu.Vulkan.Rendering
   - Gpu.Vulkan.Sample
   - Gpu.Vulkan.Sampler
