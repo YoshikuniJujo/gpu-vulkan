@@ -110,6 +110,7 @@ library:
   - Gpu.Vulkan.Pipeline.DepthStencilState
   - Gpu.Vulkan.Pipeline.DynamicState
   - Gpu.Vulkan.Pipeline.Graphics
+  - Gpu.Vulkan.Pipeline.Graphics.Type
   - Gpu.Vulkan.Pipeline.InputAssemblyState
   - Gpu.Vulkan.Pipeline.MultisampleState
   - Gpu.Vulkan.Pipeline.RasterizationState
