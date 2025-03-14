@@ -19,7 +19,7 @@ module Gpu.Vulkan.AllocationCallbacks.Internal (
 
 	-- * APPLY
 
-	apply, A, ToMiddle(..)
+	apply, A(..), ToMiddle(..)
 
 	) where
 
