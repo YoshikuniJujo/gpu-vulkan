@@ -90,6 +90,7 @@ library
       Gpu.Vulkan.Pipeline.VertexInputState
       Gpu.Vulkan.Pipeline.ViewportState
       Gpu.Vulkan.PipelineCache
+      Gpu.Vulkan.PipelineCache.Type
       Gpu.Vulkan.PipelineLayout
       Gpu.Vulkan.PushConstant
       Gpu.Vulkan.Query
@@ -166,7 +167,6 @@ library
       Gpu.Vulkan.Pipeline.VertexInputState.SizeAlignment
       Gpu.Vulkan.Pipeline.VertexInputState.SizeAlignment.Internal
       Gpu.Vulkan.Pipeline.VertexInputState.SizeAlignment.TH
-      Gpu.Vulkan.PipelineCache.Type
       Gpu.Vulkan.PipelineLayout.Type
       Gpu.Vulkan.PushConstant.Internal
       Gpu.Vulkan.Query.Enum

@@ -119,6 +119,7 @@ library:
   - Gpu.Vulkan.Pipeline.VertexInputState
   - Gpu.Vulkan.Pipeline.ViewportState
   - Gpu.Vulkan.PipelineCache
+  - Gpu.Vulkan.PipelineCache.Type
   - Gpu.Vulkan.PipelineLayout
   - Gpu.Vulkan.PushConstant
   - Gpu.Vulkan.Query
