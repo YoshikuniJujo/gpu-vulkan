@@ -74,7 +74,9 @@ library:
   - Gpu.Vulkan.Cmd
   - Gpu.Vulkan.ColorComponent
   - Gpu.Vulkan.CommandBuffer
+  - Gpu.Vulkan.CommandBuffer.Type
   - Gpu.Vulkan.CommandPool
+  - Gpu.Vulkan.CommandPool.Type
   - Gpu.Vulkan.Component
   - Gpu.Vulkan.Descriptor
   - Gpu.Vulkan.DescriptorPool
@@ -89,9 +91,11 @@ library:
   - Gpu.Vulkan.Fence
   - Gpu.Vulkan.Fence.Internal
   - Gpu.Vulkan.Framebuffer
+  - Gpu.Vulkan.Framebuffer.Type
   - Gpu.Vulkan.Image
   - Gpu.Vulkan.Image.Internal
   - Gpu.Vulkan.ImageView
+  - Gpu.Vulkan.ImageView.Type
   - Gpu.Vulkan.Instance
   - Gpu.Vulkan.Instance.Internal
   - Gpu.Vulkan.Memory
@@ -106,6 +110,7 @@ library:
   - Gpu.Vulkan.Pipeline.DepthStencilState
   - Gpu.Vulkan.Pipeline.DynamicState
   - Gpu.Vulkan.Pipeline.Graphics
+  - Gpu.Vulkan.Pipeline.Graphics.Type
   - Gpu.Vulkan.Pipeline.InputAssemblyState
   - Gpu.Vulkan.Pipeline.MultisampleState
   - Gpu.Vulkan.Pipeline.RasterizationState

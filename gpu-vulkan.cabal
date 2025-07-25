@@ -45,7 +45,9 @@ library
       Gpu.Vulkan.Cmd
       Gpu.Vulkan.ColorComponent
       Gpu.Vulkan.CommandBuffer
+      Gpu.Vulkan.CommandBuffer.Type
       Gpu.Vulkan.CommandPool
+      Gpu.Vulkan.CommandPool.Type
       Gpu.Vulkan.Component
       Gpu.Vulkan.Descriptor
       Gpu.Vulkan.DescriptorPool
@@ -60,9 +62,11 @@ library
       Gpu.Vulkan.Fence
       Gpu.Vulkan.Fence.Internal
       Gpu.Vulkan.Framebuffer
+      Gpu.Vulkan.Framebuffer.Type
       Gpu.Vulkan.Image
       Gpu.Vulkan.Image.Internal
       Gpu.Vulkan.ImageView
+      Gpu.Vulkan.ImageView.Type
       Gpu.Vulkan.Instance
       Gpu.Vulkan.Instance.Internal
       Gpu.Vulkan.Memory
@@ -77,6 +81,7 @@ library
       Gpu.Vulkan.Pipeline.DepthStencilState
       Gpu.Vulkan.Pipeline.DynamicState
       Gpu.Vulkan.Pipeline.Graphics
+      Gpu.Vulkan.Pipeline.Graphics.Type
       Gpu.Vulkan.Pipeline.InputAssemblyState
       Gpu.Vulkan.Pipeline.MultisampleState
       Gpu.Vulkan.Pipeline.RasterizationState
@@ -115,9 +120,7 @@ library
       Gpu.Vulkan.ColorComponent.Enum
       Gpu.Vulkan.CommandBuffer.Enum
       Gpu.Vulkan.CommandBuffer.Internal
-      Gpu.Vulkan.CommandBuffer.Type
       Gpu.Vulkan.CommandPool.Enum
-      Gpu.Vulkan.CommandPool.Type
       Gpu.Vulkan.Component.Enum
       Gpu.Vulkan.Descriptor.Enum
       Gpu.Vulkan.Descriptor.Internal
@@ -139,11 +142,9 @@ library
       Gpu.Vulkan.Fence.Enum
       Gpu.Vulkan.Fence.Type
       Gpu.Vulkan.Framebuffer.Enum
-      Gpu.Vulkan.Framebuffer.Type
       Gpu.Vulkan.Image.Enum
       Gpu.Vulkan.Image.Type
       Gpu.Vulkan.ImageView.Enum
-      Gpu.Vulkan.ImageView.Type
       Gpu.Vulkan.Instance.Type
       Gpu.Vulkan.Internal
       Gpu.Vulkan.Memory.Bind
@@ -154,7 +155,6 @@ library
       Gpu.Vulkan.PhysicalDevice.Enum
       Gpu.Vulkan.PhysicalDevice.Struct
       Gpu.Vulkan.Pipeline.Enum
-      Gpu.Vulkan.Pipeline.Graphics.Type
       Gpu.Vulkan.Pipeline.ShaderStage.Enum
       Gpu.Vulkan.Pipeline.ShaderStage.Internal
       Gpu.Vulkan.Pipeline.VertexInputState.BindingOffset
