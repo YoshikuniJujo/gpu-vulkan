@@ -28,14 +28,17 @@ newtype A s a = A (M.A a)  deriving Show
 class ToMiddle msa where
 	type Snd msa :: Maybe Type
 	toMiddle :: TPMaybe.M (U2 A) msa -> TPMaybe.M M.A (Snd msa)
+	fromMiddle :: TPMaybe.M M.A (Snd msa) -> TPMaybe.M (U2 A) msa
 
 instance ToMiddle 'Nothing where
 	type Snd 'Nothing = 'Nothing
 	toMiddle TPMaybe.N = TPMaybe.N
+	fromMiddle TPMaybe.N = TPMaybe.N
 
 instance ToMiddle ('Just '(s, a)) where
 	type Snd ('Just '(s, a)) = 'Just a
 	toMiddle (TPMaybe.J (U2 (A a))) = TPMaybe.J a
+	fromMiddle (TPMaybe.J a) = TPMaybe.J . U2 $ A a
 
 newtype Functions s a = Functions { toMiddleFunctions :: M.Functions a }
 	deriving Show
