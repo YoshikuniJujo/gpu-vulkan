@@ -78,6 +78,7 @@ library:
   - Gpu.Vulkan.Component
   - Gpu.Vulkan.Descriptor
   - Gpu.Vulkan.DescriptorPool
+  - Gpu.Vulkan.DescriptorPool.Type
   - Gpu.Vulkan.DescriptorSet
   - Gpu.Vulkan.DescriptorSetLayout
   - Gpu.Vulkan.DescriptorSetLayout.BindingFlags
@@ -113,6 +114,7 @@ library:
   - Gpu.Vulkan.Pipeline.VertexInputState
   - Gpu.Vulkan.Pipeline.ViewportState
   - Gpu.Vulkan.PipelineCache
+  - Gpu.Vulkan.PipelineCache.Type
   - Gpu.Vulkan.PipelineLayout
   - Gpu.Vulkan.PushConstant
   - Gpu.Vulkan.Query
@@ -120,6 +122,7 @@ library:
   - Gpu.Vulkan.Queue
   - Gpu.Vulkan.QueueFamily
   - Gpu.Vulkan.RenderPass
+  - Gpu.Vulkan.RenderPass.Type
   - Gpu.Vulkan.Sample
   - Gpu.Vulkan.Sampler
   - Gpu.Vulkan.Semaphore

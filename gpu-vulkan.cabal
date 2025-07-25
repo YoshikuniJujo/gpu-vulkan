@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.37.0.
+-- This file has been generated from package.yaml by hpack version 0.38.1.
 --
 -- see: https://github.com/sol/hpack
 
@@ -49,6 +49,7 @@ library
       Gpu.Vulkan.Component
       Gpu.Vulkan.Descriptor
       Gpu.Vulkan.DescriptorPool
+      Gpu.Vulkan.DescriptorPool.Type
       Gpu.Vulkan.DescriptorSet
       Gpu.Vulkan.DescriptorSetLayout
       Gpu.Vulkan.DescriptorSetLayout.BindingFlags
@@ -84,6 +85,7 @@ library
       Gpu.Vulkan.Pipeline.VertexInputState
       Gpu.Vulkan.Pipeline.ViewportState
       Gpu.Vulkan.PipelineCache
+      Gpu.Vulkan.PipelineCache.Type
       Gpu.Vulkan.PipelineLayout
       Gpu.Vulkan.PushConstant
       Gpu.Vulkan.Query
@@ -91,6 +93,7 @@ library
       Gpu.Vulkan.Queue
       Gpu.Vulkan.QueueFamily
       Gpu.Vulkan.RenderPass
+      Gpu.Vulkan.RenderPass.Type
       Gpu.Vulkan.Sample
       Gpu.Vulkan.Sampler
       Gpu.Vulkan.Semaphore
@@ -119,7 +122,6 @@ library
       Gpu.Vulkan.Descriptor.Enum
       Gpu.Vulkan.Descriptor.Internal
       Gpu.Vulkan.DescriptorPool.Enum
-      Gpu.Vulkan.DescriptorPool.Type
       Gpu.Vulkan.DescriptorSet.BindingAndArrayElem
       Gpu.Vulkan.DescriptorSet.BindingAndArrayElem.Buffer
       Gpu.Vulkan.DescriptorSet.Copy
@@ -164,7 +166,6 @@ library
       Gpu.Vulkan.Pipeline.VertexInputState.SizeAlignment
       Gpu.Vulkan.Pipeline.VertexInputState.SizeAlignment.Internal
       Gpu.Vulkan.Pipeline.VertexInputState.SizeAlignment.TH
-      Gpu.Vulkan.PipelineCache.Type
       Gpu.Vulkan.PipelineLayout.Type
       Gpu.Vulkan.PushConstant.Internal
       Gpu.Vulkan.Query.Enum
@@ -172,7 +173,6 @@ library
       Gpu.Vulkan.Queue.Enum
       Gpu.Vulkan.RenderPass.Enum
       Gpu.Vulkan.RenderPass.Internal
-      Gpu.Vulkan.RenderPass.Type
       Gpu.Vulkan.Sample.Enum
       Gpu.Vulkan.Sampler.Enum
       Gpu.Vulkan.Sampler.Type
