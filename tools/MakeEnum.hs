@@ -69,7 +69,7 @@ createRaw :: HeaderFile -> [String] -> CName -> IO ()
 createRaw hf zrs cn@(c : cs) = do
 	src <- readFile hf
 	let	fp = "../th/" ++ toLower c : cs ++ ".txt"
-		rslt = unlines $ zrs ++ ((fst . makeVarConstPair)
+		rslt = unlines . filter (/= "") $ zrs ++ ((fst . makeVarConstPair)
 			<$> takeDefinition cn (lines src))
 	writeFile fp rslt
 createRaw _ _ _ = error "bad"
