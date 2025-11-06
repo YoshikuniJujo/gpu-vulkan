@@ -5,12 +5,12 @@
 
 packages:
 - completed:
-    hackage: gpu-vulkan-middle-0.1.0.77@sha256:a6b75b38855cf0cf709061ced2282d0d85dc8f6fe8ebb2a797ffc235006bcc7e,9154
+    hackage: gpu-vulkan-middle-0.1.0.78@sha256:8f3ac294ee331cb283476b101ada9f0e761fac914b9eb912c5505cd1e70d441d,9154
     pantry-tree:
-      sha256: 9160c7debedcc93d541ec4e4140c3218c950e62eb84b3756c6c974ab2f3159b5
+      sha256: defa1e41a57ee9e92240b48f09bc6cb0e7a97a907784db191686bd9c2065964d
       size: 13577
   original:
-    hackage: gpu-vulkan-middle-0.1.0.77
+    hackage: gpu-vulkan-middle-0.1.0.78
 - completed:
     hackage: gpu-vulkan-core-0.1.0.21@sha256:347fcc9b982033e2162d1106e891f6d57ee251a79bdd8f9398f5ca918f3c9e91,3516
     pantry-tree:
@@ -27,7 +27,7 @@ packages:
     hackage: language-spir-v-0.1.0.3
 snapshots:
 - completed:
-    sha256: cd7c0bda539e01dd990b90e13f3c82169c16e65052557cf49fdd93590c5a7931
-    size: 692684
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2025/9/16.yaml
-  original: nightly-2025-09-16
+    sha256: aed20a74b586cf692559f427c3b81275ae15accd022f9ed8d237aa821ba767ba
+    size: 705113
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2025/11/4.yaml
+  original: nightly-2025-11-04
